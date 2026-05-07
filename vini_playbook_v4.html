@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VINI — Objection Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f2f3f7;
+  --nav: #18202e;
+  --nav2: #1f2a3c;
+  --surface: #ffffff;
+  --surface2: #f7f8fc;
+  --border: #e4e8f2;
+  --accent: #f59e0b;
+  --accent2: #2563eb;
+  --green: #16a34a;
+  --green-soft: #f0fdf4;
+  --green-border: #bbf7d0;
+  --blue-soft: #eff4ff;
+  --blue-border: #bfdbfe;
+  --text: #18202e;
+  --text2: #4b5568;
+  --muted: #8896a8;
+  --cat-active: #f59e0b;
+  --subcat-active-bg: rgba(245,158,11,0.12);
+  --subcat-active-border: #f59e0b;
+  --trigger-bg: #f0f4ff;
+  --trigger-border: #c7d7ff;
+  --trigger-text: #2563eb;
+  --trigger-active-bg: #2563eb;
+  --trigger-active-text: #fff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── LEFT SIDEBAR ── */
+.sidebar {
+  width: 270px;
+  min-width: 270px;
+  background: var(--nav);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+.brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  line-height: 1;
+}
+.brand-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-top: 3px;
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0 32px;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+/* Category button */
+.cat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+  padding: 12px 24px 6px;
+}
+.cat-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.55);
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.14s;
+  border-left: 2px solid transparent;
+}
+.cat-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+.cat-btn.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: rgba(245,158,11,0.07);
+}
+.cat-btn.disabled { opacity: 0.28; cursor: not-allowed; }
+.cat-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Sub-category buttons */
+.subcat-group {
+  padding: 4px 14px 4px 36px;
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+}
+.subcat-group.open { display: flex; }
+
+.subcat-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 7px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.48);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
+  transition: all 0.14s;
+  gap: 8px;
+  line-height: 1.4;
+}
+.subcat-btn:hover { color: rgba(255,255,255,0.82); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.14); }
+.subcat-btn.active {
+  background: var(--subcat-active-bg);
+  border-color: var(--subcat-active-border);
+  color: var(--accent);
+  font-weight: 600;
+}
+.subcat-count {
+  margin-left: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Top strip */
+.topstrip {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+}
+.breadcrumb {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.bc-sep { color: var(--border); }
+.bc-active { color: var(--accent2); font-weight: 500; }
+
+/* Content scroll */
+.content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 36px 44px 60px;
+}
+.content-scroll::-webkit-scrollbar { width: 5px; }
+.content-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Welcome / empty state */
+.welcome {
+  max-width: 560px;
+  margin: 40px auto 0;
+  text-align: center;
+}
+.welcome-icon { font-size: 42px; margin-bottom: 20px; }
+.welcome-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.welcome-body {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.8;
+}
+.welcome-body strong { color: var(--text); }
+
+/* Sub-cat header */
+.subcat-header {
+  margin-bottom: 28px;
+}
+.subcat-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.subcat-desc {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.75;
+  max-width: 700px;
+}
+
+/* Pattern block */
+.pattern-block {
+  margin-bottom: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pattern-top {
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.pattern-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  color: var(--accent2);
+  line-height: 1;
+  min-width: 32px;
+  flex-shrink: 0;
+}
+.pattern-info { flex: 1; }
+.pattern-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.pattern-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+.pattern-when {
+  font-size: 12.5px;
+  color: var(--text2);
+  margin-top: 4px;
+  line-height: 1.6;
+}
+
+.pattern-body {
+  padding: 20px 24px 24px;
+}
+
+/* Trigger section */
+.trigger-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.trigger-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.trigger-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--trigger-bg);
+  border: 1px solid var(--trigger-border);
+  border-radius: 6px;
+  color: var(--trigger-text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-style: italic;
+  user-select: none;
+}
+.trigger-chip:hover {
+  background: #dce9ff;
+  border-color: var(--accent2);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(37,99,235,0.12);
+}
+.trigger-chip.active {
+  background: var(--trigger-active-bg);
+  border-color: var(--trigger-active-bg);
+  color: var(--trigger-active-text);
+  font-style: normal;
+  box-shadow: 0 3px 10px rgba(37,99,235,0.25);
+}
+.trigger-chip .chip-arrow {
+  font-style: normal;
+  font-size: 10px;
+  opacity: 0.7;
+  transition: transform 0.15s;
+}
+.trigger-chip.active .chip-arrow { transform: rotate(90deg); opacity: 1; }
+
+/* Question reveal panel */
+.question-panel {
+  display: none;
+  margin-top: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  animation: slideDown 0.18s ease;
+}
+.question-panel.visible { display: block; }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.qp-inner {
+  padding: 20px 22px;
+}
+
+/* Question header */
+.qp-question-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.qp-question {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.6;
+  border-left: 3px solid var(--accent2);
+  padding-left: 14px;
+  margin-bottom: 16px;
+}
+
+/* Context */
+.qp-context {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.qp-context strong { color: var(--text); }
+
+.qp-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+/* AE / AI response */
+.response-block {
+  border-radius: 7px;
+  padding: 15px 18px;
+  margin-bottom: 10px;
+}
+.response-block.ae {
+  background: var(--green-soft);
+  border: 1px solid var(--green-border);
+  border-left: 3px solid var(--green);
+}
+.response-block.ai {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  border-left: 3px solid var(--accent2);
+}
+.response-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.response-block.ae .response-label { color: var(--green); }
+.response-block.ai .response-label { color: var(--accent2); }
+.response-block.ae p { font-size: 13.5px; color: #1a3a26; line-height: 1.75; }
+.response-block.ai p { font-size: 13.5px; color: #1a2640; line-height: 1.75; }
+.response-block p strong { font-weight: 700; }
+.response-block p em { font-weight: 600; font-style: normal; }
+.response-block.ae p em { color: var(--green); }
+.response-block.ai p em { color: var(--accent2); }
+
+/* Alt angles */
+.alt-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 16px 0 8px;
+}
+.alt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.alt-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.alt-card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.alt-card p { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+.alt-card strong { color: var(--text); }
+
+/* Outcome dot in trigger */
+.out-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.out-dot.res { background: var(--green); }
+.out-dot.par { background: #d97706; }
+.out-dot.unr { background: #dc2626; }
+
+/* Unique badge */
+.unique-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fef9c3;
+  border: 1px solid #fde047;
+  color: #854d0e;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: block;
+  width: fit-content;
+}
+
+@media (max-width: 800px) {
+  .sidebar { width: 220px; min-width: 220px; }
+  .content-scroll { padding: 24px 20px 60px; }
+  .alt-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-name">VINI</div>
+    <div class="brand-tag">Sales Objection Playbook</div>
+  </div>
+
+  <div class="sidebar-scroll">
+    <div class="cat-label">Our Category</div>
+
+    <!-- PRODUCT (active, has subcats) -->
+    <button class="cat-btn active" onclick="toggleCat('product', this)">
+      <span class="cat-dot"></span> Product
+    </button>
+    <div class="subcat-group open" id="subcat-product">
+      <button class="subcat-btn" onclick="loadSubcat('scope', this)">
+        Scope &amp; Feature Gap<span class="subcat-count">10</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('voice', this)">
+        Voice Quality &amp; Naturalness<span class="subcat-count">3</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('channel', this)">
+        Missing Channel<span class="subcat-count">3</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('transfer', this)">
+        Live Transfer &amp; Escalation<span class="subcat-count">2</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('language', this)">
+        Language &amp; Accent Gap<span class="subcat-count">2</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('crm', this)">
+        CRM / Platform Integration<span class="subcat-count">1</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('agent', this)">
+        Agent Behavior &amp; Logic<span class="subcat-count">1</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('outbound', this)">
+        Outbound &amp; Follow-up<span class="subcat-count">1</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('bugs', this)">
+        Product Not Working / Bugs<span class="subcat-count">2</span>
+      </button>
+      <button class="subcat-btn" onclick="loadSubcat('resistance', this)">
+        AI Resistance (Anti-AI)<span class="subcat-count">1</span>
+      </button>
+    </div>
+
+    <!-- Other categories — no data yet -->
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Need / Priority
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Vendor / Competitive
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Pricing
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Tech / Integration
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Adoption / Training
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Contract / Legal
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Decision / Alignment
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Implementation
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Support / Service
+    </button>
+    <button class="cat-btn disabled" onclick="">
+      <span class="cat-dot"></span> Other / Unclear
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- Top strip / breadcrumb -->
+  <div class="topstrip">
+    <div class="breadcrumb" id="breadcrumb">
+      <span>Vini</span>
+      <span class="bc-sep">›</span>
+      <span>Select a category to begin</span>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="content-scroll" id="contentArea">
+    <div class="welcome">
+      <div class="welcome-icon">🎯</div>
+      <div class="welcome-title">Sales Objection Playbook</div>
+      <div class="welcome-body">
+        <p>Every objection in this doc came from a real call — transcribed, categorized, and patterned so your team is never caught off guard. <strong>Select a category on the left, then a sub-category</strong> to see every pattern we've identified for that topic.</p>
+        <br>
+        <p>Inside each pattern, <strong>click any trigger phrase</strong> — the exact words clients use on calls — to reveal the underlying client question, what it really means, and exactly how to respond. Trigger phrases from resolved calls show what worked. Unresolved or partial ones show the recommended response to use going forward.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// DATA — all patterns, triggers, questions, and responses
+// ════════════════════════════════════════════════════════
+
+const SUBCATS = {
+
+scope: {
+  title: "Scope & Feature Gap",
+  desc: "The most common product category. Covers questions about what Vini does and doesn't do — from BDC replacement fears, scheduling logic, inventory accuracy, customization depth, and scale limits.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Customization & Script Control",
+      when: "When a dealer demos the agent and doesn't like specific phrasing, the opener, closer, or how pushy it feels. Luxury dealers especially. Very high frequency.",
+      triggers: [
+        {
+          label: '"The last reply wasn\'t necessary"',
+          outcome: "res",
+          question: "Can we control what the agent says at each stage — not just the opener, but every word?",
+          context: "<strong>What they mean:</strong> They want word-level control over the agent's script at every stage, not just the intro. They've heard something they don't like and need reassurance it's changeable.",
+          ae: "\"<strong>Openers and closing statements are completely on you.</strong> Before we go live, we run the entire script by you — word by word. You tell us: too pushy, dial it back. Too passive, lean it in. Think of it like briefing a new hire before their first call. You set the standard, we build the agent to hold it.\"",
+          alts: [
+            { label: "Luxury / premium stores", text: "\"<strong>Paragon Honda wanted aggressive. Your store wants consultative.</strong> The agent runs by your rules — we don't have a default that overrides your instructions. Show me what 'right' sounds like on your best calls and we'll build to that exactly.\"" },
+            { label: "AI disclosure wording", text: "\"Every word of the disclosure is yours to customize. <strong>Most dealers use: 'Hi, I'm Vini, your AI assistant for [Dealer Name].'</strong> You can make it warmer, shorter, or more formal — whatever matches your brand voice.\"" }
+          ]
+        },
+        {
+          label: '"She was too pushy — just going for appointment"',
+          outcome: "par",
+          question: "The agent just keeps pushing for the appointment — it's not reading the customer or diagnosing what they actually need first.",
+          context: "<strong>What they mean:</strong> The call flow feels like a script, not a conversation. It ignores customer signals and goes straight for the close — which is exactly what their worst BDC reps do.",
+          ai: "\"The appointment push level is a configuration setting. <strong>We can instruct Vini to qualify vehicle intent, trade-in situation, and timeline first — and only make the appointment ask after those signals are captured.</strong> Your best BDC rep doesn't lead with 'when can you come in' — and Vini doesn't have to either.\"",
+          alts: [
+            { label: "If they want self-serve control", text: "\"Real-time self-serve editing is on our roadmap. Right now changes go through your CSM within 24 hours — <strong>most dealers prefer it because there's a QA check before anything goes live.</strong> You flag it, we fix it, and we send you a test call to confirm.\"" }
+          ]
+        },
+        {
+          label: '"My biggest concern is lack of customization I can do myself"',
+          outcome: "unr",
+          question: "Why do I have to rely on your team for every single change — can't I control it myself in real time?",
+          context: "<strong>What they mean:</strong> Not a feature request — an accountability concern. They don't trust that change requests will be fast enough. They want independence, not a support relationship.",
+          ai: "\"Every single thing you just flagged — the phrasing, the push level, the flow — <strong>those are configuration decisions, not product limitations.</strong> We build the script around your dealership's standards during onboarding. It's not a support ticket — it's a structured setup session. <em>What would you want to be different? Let's write it down right now and I'll show you how fast we apply it.</em>\"",
+        }
+      ]
+    },
+    {
+      num: "02",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Response Delay / Latency",
+      when: "Comes up in virtually every demo. Almost always triggered by the demo environment — not production. Critical to address with confidence before it kills the deal.",
+      triggers: [
+        {
+          label: '"5-second pause screams AI bot"',
+          outcome: "res",
+          question: "If my customers hear this delay, they'll think the line is dead or know it's a bot — will this happen in real use?",
+          context: "<strong>What they mean:</strong> The latency isn't just an annoyance — it's a credibility problem. They're worried a real customer will hang up before the conversation starts.",
+          ae: "\"What you're seeing is a <strong>demo account with no live integrations</strong> — the agent is cold-pulling from a generic website. In production, your DMS, CRM, and inventory feed are pre-loaded. The agent doesn't search — the data is already there. <em>Latency in a live integrated account runs under 1.5 seconds.</em> Same reason a barista is slower their first day than their hundredth.\"",
+          alts: [
+            { label: "Humanize the pause", text: "\"We actually build in a half-second intentional pause — because <strong>customers read a completely instant response as 'bot.'</strong> A natural pause reads as 'she's looking it up' — exactly what a real BDC rep does.\"" },
+            { label: "Configure the silence", text: "\"During the pause we can add a brief filler — <strong>'Let me check that for you'</strong> — so the customer knows Vini is still there. That's a one-line config change and it eliminates the dead-air concern entirely.\"" }
+          ]
+        },
+        {
+          label: '"Competitors I looked at didn\'t have that delay"',
+          outcome: "par",
+          question: "I've demoed other solutions and they were faster — why would I choose Vini if the latency is worse?",
+          context: "<strong>What they mean:</strong> They've done their research. This is a direct competitive comparison — they need a credible, specific answer, not defensiveness or deflection to the demo setup.",
+          ai: "\"That's fair — and I want to be specific rather than defensive. <strong>Sub-1-second demos are usually running pre-cached static data</strong> — not pulling live inventory, checking calendar availability, and running objection handling all at once. Vini does more in that pause. Ask the other vendor what their latency is on a live, fully integrated account. <em>Let me call the live agent right now so you can compare apples to apples.</em>\""
+        },
+        {
+          label: '"Up to 7 seconds — customer might think call dropped"',
+          outcome: "unr",
+          question: "I timed it — 7 seconds of nothing. A real customer would hang up. This isn't a demo issue, is it?",
+          context: "<strong>What they mean:</strong> They've stress-tested it and the number is bad enough that they don't accept the 'demo environment' explanation. They need a real answer, not a standard deflection.",
+          ai: "\"I hear you — 7 seconds is too long and I'm not going to tell you it's always the demo. <strong>Let me pull the logs from this specific call</strong> and find out exactly what caused that pause — because in a properly integrated production account it shouldn't happen. I'll come back to you with the root cause and the fix. <em>Can we set up a live production call test this week so you hear the real experience before we go further?</em>\""
+        }
+      ]
+    },
+    {
+      num: "03",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "AI Loops & Repetition",
+      when: "Surfaces during live demos or post-go-live review calls. High deal risk — must be handled with a specific explanation and clear fix plan, not just acknowledgment.",
+      triggers: [
+        {
+          label: '"She asked to record the call 3 times — he already said yes"',
+          outcome: "unr",
+          question: "The agent can't remember what was confirmed 10 seconds ago — if it forgets consent, what else will it forget?",
+          context: "<strong>What they mean:</strong> One repeated mistake is extrapolated into a broader reliability concern. They're not just upset about consent — they're questioning the agent's basic memory.",
+          ai: "\"Here's what I want you to know: <strong>we log every single call through automated QA.</strong> That loop you saw — it gets flagged within hours, our team traces the exact phrase pattern, and it gets patched before the next batch. <em>Can I show you our QA dashboard? I want you to see how fast issues like this get caught and resolved — because that's the accountability you actually care about.</em>\""
+        },
+        {
+          label: '"She kept asking new or pre-owned after I already answered"',
+          outcome: "unr",
+          question: "The agent can't understand a basic answer and keeps asking the same question — that's alarming on a live customer call.",
+          context: "<strong>What they mean:</strong> Speech recognition misfired. But from their view: the AI is too dumb to understand 'new.' That's a fundamental concern about whether it's ready for real customers.",
+          ai: "\"The 'new or pre-owned' loop happened because the transcription caught 'new' as 'no' — it's a background noise issue in this demo setup. <strong>We have acoustic calibration during onboarding specific to your store's environment</strong> — office noise, speakerphone, headset — that eliminates this. <em>The name repetition? One toggle in setup — max one use per exchange.</em> These aren't design choices, they're config settings we fix before you go live.\""
+        },
+        {
+          label: '"Every response repeated the year, make, model — very annoying"',
+          outcome: "par",
+          question: "The confirmation loop feels mechanical — a real rep doesn't repeat specs four times in one call.",
+          context: "<strong>What they mean:</strong> It's not wrong — it's over-correct. Customers feel patronized when the agent confirms the same information repeatedly. It's a naturalness problem as much as a logic problem.",
+          ae: "\"Vehicle confirmation repetition is literally one setting: <strong>confirm once, then stop.</strong> We write it into your script during onboarding. Every dealership gets a custom confirmation style — once per call, never back-to-back. I'll have that set before you hear another recording.\"",
+          alts: [
+            { label: "Own it fast, then close", text: "\"That feedback just logged to our dev team in real time. <strong>By end of this week I'll send you a screen recording of the fix applied.</strong> That's the turnaround you get with us — not a ticket queue.\"" }
+          ]
+        }
+      ]
+    },
+    {
+      num: "04",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Inventory & Data Accuracy",
+      when: "Critical pattern — directly tied to real business risk. Comes up mid-demo or post-launch. The client needs a clear technical explanation, not just reassurance.",
+      triggers: [
+        {
+          label: '"It scheduled an oil change on a Tesla"',
+          outcome: "res",
+          question: "The agent doesn't know which vehicles our store services — it's not connected to our makes/models data at all.",
+          context: "<strong>What they mean:</strong> A basic configuration gap created a real customer-facing error. They want to know this is configurable and how it's prevented at go-live.",
+          ae: "\"We ask you for a complete list of makes and models your service department supports during onboarding. <strong>That list becomes the agent's knowledge base.</strong> It will never schedule a Tesla for an oil change if Tesla isn't on your approved list. Configured once, never changes unless you tell us.\""
+        },
+        {
+          label: '"She couldn\'t confirm a stock number — that\'s crazy"',
+          outcome: "unr",
+          question: "If the agent can't confirm a basic stock number, how is it going to do the most fundamental part of its job?",
+          context: "<strong>What they mean:</strong> Stock number lookup is table stakes for a car dealer AI. If it can't do that, the product isn't ready for their store — and they're about to say so.",
+          ai: "\"Let me be specific: <strong>this demo has no DMS connection — that's intentional.</strong> Stock number lookup, pricing, and business hours all require a live feed. When we connect to your DMS — which takes 2–3 days — the agent reads your exact stock numbers in real time. The issue you just saw? <em>Impossible in production because the inventory feed updates every 15 minutes.</em> Can I walk you through what the integration looks like?\""
+        },
+        {
+          label: '"Bot only showed the Sorento — missed Telluride and Carnival"',
+          outcome: "par",
+          question: "The agent is under-serving our inventory — it's only surfacing one relevant vehicle instead of all matching options.",
+          context: "<strong>What they mean:</strong> They're losing opportunities because the agent isn't doing enough to match customers to available inventory. One option when there are three is a failure.",
+          ae: "\"The agent is configured to surface the top match first, then offer alternatives. <strong>If it's only showing one vehicle, we adjust the response logic to present 2–3 options before asking the customer to narrow down.</strong> That's a script change we make in onboarding — you define how many options you want surfaced and in what order.\"",
+          ai: "\"This is a configuration gap we fix before go-live. <strong>We set the inventory surfacing logic during onboarding</strong> — you decide: top one match and prompt for more, or all matching vehicles upfront. We'll build it around how your BDC team actually handles that conversation today.\""
+        }
+      ]
+    },
+    {
+      num: "05",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Pricing & Negotiation Guardrails",
+      when: "Comes up in most demos when the dealer tests pricing scenarios. Getting this wrong even once in a live call is brand-damaging — they need an explicit, confident answer.",
+      triggers: [
+        {
+          label: '"I can\'t have AI negotiating over the phone"',
+          outcome: "res",
+          question: "I need a hard guarantee that the agent will never negotiate price — pricing conversations have to stay off the table until the customer is in-store.",
+          context: "<strong>What they mean:</strong> Pricing over the phone kills the visit. They've been burned before by BDC reps going off-script on price — they won't let an AI do the same.",
+          ae: "\"We <strong>never train the agent to negotiate.</strong> Period. If a customer asks for best price or pushes on out-the-door, Vini says: 'For the best offer, I'd love to have you come in — our team can work with you directly.' <em>It then books the appointment and sends an immediate alert to your floor team.</em> You define every guardrail. Pricing is a hard transfer by default.\"",
+          alts: [
+            { label: "Out-the-door demand", text: "\"That's a setting. <strong>If you want Vini to share the listing price when a customer insists, we turn that on. If you want a hard no on all pricing, we configure that instead.</strong> What's your standard when a phone customer pushes for a number? We'll match it exactly.\"" },
+            { label: "Online discount concern", text: "\"If there's a public discount on your website, Vini can quote it — <strong>that's already public information and quoting it builds trust.</strong> What she won't do is negotiate below that number or promise additional deals.\"" }
+          ]
+        },
+        {
+          label: '"Internal pricing in xTime — not customer-facing"',
+          outcome: "par",
+          question: "Our system has two price layers — the agent is pulling internal pricing and quoting it to customers, which is a compliance problem.",
+          context: "<strong>What they mean:</strong> The integration is pulling the wrong price field. If a customer hears internal pricing, that's both a trust issue and potentially a legal one.",
+          ai: "\"This is a field mapping issue we fix during integration. <strong>We point Vini at your external customer-facing price field, not internal xTime data.</strong> Once we confirm which field holds the public price, we update the mapping and add a verbiage layer: 'This price may vary once your vehicle is inspected — your advisor will confirm the final amount.' <em>Customers get context, not commitment — and your internal pricing stays internal.</em>\""
+        }
+      ]
+    },
+    {
+      num: "06",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "BDC Replacement Fear",
+      when: "Comes up when the dealer has 2+ BDC reps or has been pitched 'replace your team' before. This is emotional — not just practical. Empathy before evidence.",
+      triggers: [
+        {
+          label: '"I have 2 BDC agents and I don\'t want to replace them"',
+          outcome: "res",
+          question: "Give me a use case where Vini makes my existing BDC team better — not one that makes them redundant.",
+          context: "<strong>What they mean:</strong> They're protective of their staff. They need to believe this is additive — not a replacement pitch dressed up as augmentation.",
+          ae: "\"We have <strong>never once pitched this as a replacement.</strong> Your BDC team are your closers — Vini is their setup crew. Right now your best agent spends time on after-hours hang-ups, wrong departments, and leads that never had intent. <em>Give Vini that shift — 6pm to 8am, weekends, and overflow calls when 3 lines ring at once.</em> Your team shows up Monday morning to a queue of warm appointments, not cold callbacks.\"",
+          alts: [
+            { label: "The overflow argument", text: "\"When 3 calls come in at once, who takes call #3? <strong>Right now — nobody. Vini takes it, warm transfers to a human the moment one is free.</strong> No lead dropped. No customer frustrated.\"" },
+            { label: "Start narrow", text: "\"Let's not start with replacing anything. <strong>Start with just after-hours calls for 30 days.</strong> See what Vini captures that was going to voicemail. If the ROI is there, we expand.\"" }
+          ]
+        },
+        {
+          label: '"We like talking to real people — hot-blooded customers"',
+          outcome: "par",
+          question: "My customer base values human interaction — if the AI feels robotic or limits the conversation, I'll lose deals.",
+          context: "<strong>What they mean:</strong> This is a cultural and values objection. They see AI as antithetical to their relationship-driven sales process.",
+          ai: "\"Here's the question I'd ask your team: <strong>what percentage of your inbound calls come in after 6pm?</strong> Industry average is 34%. That's a third of your leads going to voicemail every night. <em>Vini answers every single one, qualifies intent, and books the appointment — your team picks up Monday with context already captured.</em> That's not replacing the relationship. That's making sure the relationship gets a chance to start.\"",
+          alts: [
+            { label: "Hot-blooded / cultural markets", text: "\"Vini's job isn't to replace the relationship — <strong>it's to make sure the customer reaches your team.</strong> She captures intent, gets the details, and transfers them to your salesperson. The relationship still belongs to your team.\"" }
+          ]
+        }
+      ]
+    },
+    {
+      num: "07",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Scale & Concurrent Call Volume",
+      when: "Comes up with larger dealers or groups stress-testing for enterprise reliability. One wrong answer about capacity can kill a multi-rooftop deal.",
+      triggers: [
+        {
+          label: '"If she\'s in a call, can she take another one simultaneously?"',
+          outcome: "res",
+          question: "Is there a concurrency bottleneck — or does Vini scale the way I need for my peak call volume?",
+          context: "<strong>What they mean:</strong> They need to know the product scales without queuing. If there's a limit, they need to know it — and understand the solution.",
+          ae: "\"Each Vini instance handles one call at a time — but you can run <strong>effectively unlimited instances in parallel.</strong> Think of it as having 50 versions of Vini all working simultaneously. The dealerships running the most volume handle hundreds of concurrent calls with no queue. <em>What's your peak hour call volume? We'll size it for your store specifically.</em>\""
+        },
+        {
+          label: '"How many outbound calls per day? Is it instant?"',
+          outcome: "res",
+          question: "I need to understand the actual throughput mechanics — is this real parallel dialing or sequential, and what are the limits?",
+          context: "<strong>What they mean:</strong> They're planning a real campaign and need hard numbers before they commit. Vague answers won't work.",
+          ae: "\"Outbound campaign deployment is near-instant — calls begin dialing within minutes of launch. <strong>Current capacity is 300–350 outbound dials per day per agent configuration.</strong> For larger campaigns, we scale the config accordingly. What's your target campaign size? Let me size it right for your use case.\""
+        }
+      ]
+    },
+    {
+      num: "08",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Dashboard & Platform Complexity",
+      when: "Comes up with operations-focused dealers already stretched across multiple systems who are skeptical about adding another one.",
+      triggers: [
+        {
+          label: '"Another dashboard is another hurdle"',
+          outcome: "par",
+          question: "My team is already stretched — if using Vini means daily dashboard monitoring, they won't do it and the product fails.",
+          context: "<strong>What they mean:</strong> Adoption is the real concern. They've bought tools before that collected dust because the workflow didn't fit their team.",
+          ai: "\"<strong>You don't have to live in our dashboard.</strong> Vini pushes all call outcomes, lead data, appointment notes, and summaries directly into your CRM automatically — your BDC sees it where they already work. The dashboard is there when you want to dig into call recordings or pull campaign reports. <em>What CRM are you on? Let me show you exactly what the data push looks like in your system right now.</em>\""
+        },
+        {
+          label: '"I can\'t be downloading CSV files every day"',
+          outcome: "par",
+          question: "I need automation — not manual daily exports. If reporting requires daily effort from my team, it won't get used.",
+          context: "<strong>What they mean:</strong> Manual work is a deal-breaker for lean teams. The value of the AI disappears the moment someone has to do something manual every day to get the insights.",
+          ai: "\"<strong>No CSV downloads — ever.</strong> All data pushes automatically via API to your CRM and DMS. The only time you'd open our dashboard is to review call recordings for QA or pull a custom report. Day-to-day operations stay entirely in your existing workflow.\""
+        }
+      ]
+    },
+    {
+      num: "09",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "Spam Caller ID & Number Trust",
+      when: "Comes up in outbound demos. Critical to explain demo vs. production behavior — this is almost always a demo-only issue that resolves entirely at go-live.",
+      triggers: [
+        {
+          label: '"The call comes as spam already"',
+          outcome: "res",
+          question: "If my customers see 'Spam Risk' on their screen, they won't pick up — that kills the entire outbound value proposition.",
+          context: "<strong>What they mean:</strong> Pickup rate is everything for outbound AI. Spam flagging means the product doesn't work before it even starts — this needs a concrete, immediate answer.",
+          ae: "\"What you're seeing is our demo account — an unregistered test number, which is why it shows as spam. <strong>When you go live, we register your caller ID through carrier verification.</strong> We use your local area code so customers recognize it as a call from your store. <em>Spam flagging goes away entirely in production.</em> I can show you what your registered number would look like on a customer's screen right now.\""
+        }
+      ]
+    },
+    {
+      num: "10",
+      tag: "Pattern · Scope & Feature Gap",
+      title: "After-Hours & Overflow Logic",
+      when: "Comes up when dealers start imagining real-world edge cases — 11pm calls, overflow, phone trees. They want to make sure the AI won't overpromise.",
+      triggers: [
+        {
+          label: '"I don\'t want it giving a 20-minute callback impression at midnight"',
+          outcome: "res",
+          question: "How does Vini handle after-hours calls without making promises about callback timing that we physically can't keep?",
+          context: "<strong>What they mean:</strong> A false promise to a customer (e.g., 'someone will call you in 20 minutes' at 11pm) creates a real customer service failure. They want control over exactly what's said.",
+          ae: "\"Vini knows your hours and <strong>she never overpromises.</strong> You define exactly what she says after hours — 'We're closed right now, we'll have someone call you at 9am' or 'Leave your details and a manager will reach out first thing.' <em>Let me play you an after-hours call recording so you can hear exactly how she handles it.</em>\"",
+          alts: [
+            { label: "Phone tree / overflow", text: "\"We map Vini onto your existing phone setup — <strong>she only steps in when a call would otherwise go to voicemail or be dropped.</strong> After 5 rings with no answer, she intercepts. The phone tree stays exactly as it is.\"" }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+voice: {
+  title: "Voice Quality & Naturalness",
+  desc: "Client questions about voice naturalness, latency, crosstalk, and whether the AI sounds human enough for real customer calls.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Voice Quality",
+      title: '"It Sounds Like AI" — Naturalness & Human Feel',
+      when: "Most common voice concern. Often surfaces when the dealer plays the call for their team. The moment someone says 'it sounds like AI,' the deal is in jeopardy.",
+      triggers: [
+        {
+          label: '"I can tell it\'s a bot — not natural enough"',
+          outcome: "res",
+          question: "The voice is close but not convincing — if my staff can tell it's AI, my customers will too, and that changes everything about how they interact with it.",
+          context: "<strong>What they mean:</strong> Trust is the issue. If the AI sounds robotic, customers will disengage, give minimal information, or ask for a human immediately — undermining everything.",
+          ae: "\"What you're hearing is one of several voice profiles — <strong>most dealers don't land on the first one.</strong> We have Emily, Donnie, Mia, Mark, and others — each with different tone, pacing, and warmth. Let me play you two or three right now and you tell me which one sounds closest to your best BDC rep on the phone. <em>The voice you just heard? Most dealers don't use it.</em>\"",
+          alts: [
+            { label: "Luxury / premium brand tone", text: "\"Mercedes, BMW, and Lexus dealers all have us set a more formal, measured voice persona. <strong>We customize the word choices, not just the voice</strong> — so she doesn't say 'awesome' but 'certainly' and 'of course.' Brand voice matters and we match it.\"" }
+          ]
+        },
+        {
+          label: '"Other AI solutions sound more lifelike — yours is behind"',
+          outcome: "unr",
+          question: "I've done a comparison and Vini lost on voice quality — give me a real reason to overlook that, not marketing.",
+          context: "<strong>What they mean:</strong> They came in with a benchmark. Social proof won't work here — they need to hear a better voice option right now, in this conversation.",
+          ai: "\"That's fair feedback — and I want to understand what 'better' sounds like to you specifically. <strong>Can you describe what the other solution sounded like, or name it?</strong> I'd rather find the right voice for you today than defend the one you just heard. <em>Let me play you our most recent voice model right now — it may already be closer to what you're looking for.</em>\""
+        },
+        {
+          label: '"She sounds almost annoyed — gives off a negative vibe"',
+          outcome: "unr",
+          question: "The tone itself is off — not just the voice quality, but the emotional register. It comes across as impatient or cold.",
+          context: "<strong>What they mean:</strong> Tone carries emotional weight. An AI that sounds annoyed will trigger customers to get defensive or hang up — it's worse than a neutral robotic voice.",
+          ai: "\"Tone is one of the most important things we tune — <strong>and if she's coming across as impatient, that's a real problem we want to fix.</strong> Point me to the specific moment in the call. I want to pull that exact segment and work with the team on a rephrasing and voice persona change before your next demo.\""
+        }
+      ]
+    },
+    {
+      num: "02",
+      tag: "Pattern · Voice Quality",
+      title: "Interruptions & Crosstalk",
+      when: "Comes up when dealers test the agent interactively. They want to know the agent handles real conversation dynamics — not just scripted turns.",
+      triggers: [
+        {
+          label: '"We were talking over each other — timing was off"',
+          outcome: "par",
+          question: "Natural conversation doesn't feel natural — there are awkward moments when both parties speak at once. That erodes the human feel entirely.",
+          context: "<strong>What they mean:</strong> The turn-taking is broken. Real conversations don't have synchronized pauses — the agent needs to detect and yield when interrupted.",
+          ae: "\"Vini is trained to stop immediately the moment she detects the customer speaking — <strong>she doesn't talk over them.</strong> What you experienced may be demo latency — in a live production call, the turn-detection is much tighter. <em>Let me show you a live production call recording where a customer interrupts mid-sentence — you'll hear Vini stop cleanly and wait.</em>\""
+        }
+      ]
+    },
+    {
+      num: "03",
+      tag: "Pattern · Voice Quality",
+      title: "Wrong Pronunciations — Brands, Symbols, Names",
+      when: "Comes up when dealers test with real inventory or customer scenarios. Brand name mispronunciation is embarrassing — carries outsized weight in a demo.",
+      triggers: [
+        {
+          label: '"She mispronounced our brand name"',
+          outcome: "res",
+          question: "If the agent represents my brand, it needs to say our brand name correctly — getting it wrong in front of a customer is unacceptable.",
+          context: "<strong>What they mean:</strong> Brand identity is non-negotiable. A mispronounced make or dealer name signals that the product wasn't prepared for their store specifically.",
+          ae: "\"Every brand name, trim level, and dealer-specific term gets loaded into Vini's phonetic library during onboarding — <strong>before she ever talks to a real customer.</strong> If she said the name wrong, that's because this demo hasn't been configured for your store yet. By go-live, she'll have every make, model, and trim you carry pronounced exactly right.\"",
+          alts: [
+            { label: "@ symbol / email read aloud", text: "\"That's a simple config fix — <strong>we tell Vini to skip email addresses on calls and only confirm phone numbers and appointment details.</strong> She won't read symbols aloud in a configured account.\"" }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+channel: {
+  title: "Missing Channel (SMS/Email/WhatsApp)",
+  desc: "Client expects the AI to handle SMS, email, or WhatsApp — channels that are either not live yet or limited in the current product.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Missing Channel",
+      title: "Email Not Live Yet",
+      when: "Comes up when dealers have email-heavy BDC workflows. Challenge: don't lose the deal by over-focusing on the gap — bridge to what voice captures today.",
+      triggers: [
+        {
+          label: '"Spyne doesn\'t handle email yet — when is it coming?"',
+          outcome: "par",
+          question: "Email is a core channel for us — if it's not live, there's a real gap and I need to know if it's coming soon enough to matter.",
+          context: "<strong>What they mean:</strong> They may have come specifically because they thought email was included. Finding out it's not is a surprise — and surprises in demos kill deals.",
+          ai: "\"Email is in active development — <strong>I'm not going to give you a date I can't stand behind, but it's coming.</strong> Here's what I want you to see first: 80% of your missed leads come through voice — the phone calls that go to voicemail or ring out after hours. <em>Let me show you what your missed call rate looks like on a real dealership account — because that's the number that changes your perspective on this.</em>\""
+        }
+      ]
+    },
+    {
+      num: "02",
+      tag: "Pattern · Missing Channel",
+      title: "SMS / Text Back-and-Forth",
+      when: "Comes up when dealers want real-time text conversations with customers — not just post-call SMS summaries. This is not currently live.",
+      triggers: [
+        {
+          label: '"SMS is a deal-breaker — I need text back-and-forth"',
+          outcome: "unr",
+          question: "I need the AI to handle real-time text conversations with customers — voice-only doesn't solve my problem.",
+          context: "<strong>What they mean:</strong> Their BDC team lives in text. A voice-only AI doesn't fit their workflow — this is a genuine product-market mismatch that requires honesty.",
+          ai: "\"SMS back-and-forth is in development. Right now, <strong>Vini handles the inbound voice layer</strong> — every call that used to go to voicemail now gets answered, qualified, and booked. For your existing SMS workflow, your current tool keeps running alongside Vini — they don't overlap. <em>Is it okay if we start with voice for 30 days so you have real data on what Vini captures before we talk about what's coming?</em>\""
+        },
+        {
+          label: '"I\'m worried two AI tools will text the same customer"',
+          outcome: "res",
+          question: "If Vini and my current SMS tool both fire at once, my customer gets two AI messages simultaneously — that's confusing and spammy.",
+          context: "<strong>What they mean:</strong> They already have Podium or similar running. They're protecting the customer experience and worried about doubling up on outreach.",
+          ae: "\"Vini handles voice — your existing SMS tool handles text. <strong>They don't overlap because they're on different channels entirely.</strong> We configure Vini to stay in the voice lane, so zero risk of your customer getting two AI touchpoints at once. The integrations are complementary, not competing.\""
+        }
+      ]
+    },
+    {
+      num: "03",
+      tag: "Pattern · Missing Channel",
+      title: "WhatsApp & Social DM Markets",
+      when: "Most acute for international markets (Brazil, Middle East) and bilingual US markets where WhatsApp is primary. This is a genuine gap — don't oversell a timeline.",
+      triggers: [
+        {
+          label: '"In our market, everyone uses WhatsApp — not calls"',
+          outcome: "unr",
+          question: "Without WhatsApp, Vini is irrelevant for my market — this isn't a preference, it's how my customers communicate.",
+          context: "<strong>What they mean:</strong> This is a hard product-market fit problem. They need honesty — not a promise of a roadmap item that's far away.",
+          ai: "\"You're right that WhatsApp is critical for your market — <strong>and I want to be honest rather than overpromise.</strong> WhatsApp integration is not something we can deliver quickly. <em>Is there any inbound call volume — even 20–30% — where Vini could capture leads today? If it's truly WhatsApp-only, I'd rather revisit in 6 months when we're further along than close a deal that doesn't serve you.</em>\""
+        }
+      ]
+    }
+  ]
+},
+
+transfer: {
+  title: "Live Transfer & Escalation Missing",
+  desc: "How and when Vini hands off to a human — warm vs. blind transfer, what happens when no one picks up, and real-time monitoring requests.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Live Transfer",
+      title: "Warm Transfer Mechanics",
+      when: "Comes up when dealers think through real operational scenarios. They need to believe the handoff is professional — not jarring for the customer or blind for their team.",
+      triggers: [
+        {
+          label: '"Is it a blind transfer or warm — what does my team hear?"',
+          outcome: "res",
+          question: "My team is going to look unprepared if they pick up a transferred call with zero context about who they're talking to and what was already said.",
+          context: "<strong>What they mean:</strong> A blind transfer is worse than no AI at all — it breaks the customer experience at the most critical moment. They need specifics on what the handoff looks like.",
+          ae: "\"It's a warm transfer. Before your agent picks up, Vini gives them a 10-second brief — <strong>customer name, what they called about, what they've already asked for, and their intent level.</strong> Your rep isn't walking in cold. <em>Can I demo a transfer right now so you can hear exactly what your team would experience?</em>\"",
+          alts: [
+            { label: "Transfer fallback — nobody picks up", text: "\"If no one picks up during the transfer, Vini re-engages the customer — <strong>'I'm sorry, looks like the team is tied up — let me book you a callback at a specific time.'</strong> No lead lost. No dead-air for the customer.\"" }
+          ]
+        },
+        {
+          label: '"We\'re a now business — live transfer is non-negotiable"',
+          outcome: "unr",
+          question: "Our sales model is speed-to-lead. If the AI can't transfer a hot prospect live, the value proposition breaks at the most critical moment.",
+          context: "<strong>What they mean:</strong> They don't need a roadmap item — they need a solution today. This requires honesty about the gap and a credible bridge to what exists.",
+          ai: "\"Live warm transfer is on our roadmap — I won't give you a date I can't stand behind. <strong>Here's how dealers are solving this right now:</strong> when Vini captures a high-intent lead, she immediately sends a text alert to your team with the customer's name, number, vehicle interest, and call summary. Your fastest reps are calling back within 2 minutes. <em>Can I show you what that alert looks like — and the average callback time for your store size?</em>\""
+        }
+      ]
+    },
+    {
+      num: "02",
+      tag: "Pattern · Live Transfer",
+      title: "Real-Time Monitoring",
+      when: "Comes up with control-oriented managers used to monitoring BDC calls live. They need reassurance they won't be blind to what the AI is doing.",
+      triggers: [
+        {
+          label: '"I want to watch the AI conversation live as it happens"',
+          outcome: "unr",
+          question: "I need to be a supervisor to the AI the same way I supervise my BDC — able to monitor and intervene if something goes wrong in real time.",
+          context: "<strong>What they mean:</strong> Their underlying concern is control and accountability. They don't want to find out about a bad AI interaction 24 hours after it happened.",
+          ai: "\"Real-time live view isn't in the dashboard yet — that's on our roadmap. <strong>What you do get is a post-call summary within minutes of the call ending</strong> — full transcript, outcome, intent level, and next action. Most managers set up a Slack or text alert for every Vini call so they're notified immediately. <em>Can I show you what a post-call summary looks like? I want you to judge whether that visibility level works for how you manage your BDC today.</em>\""
+        }
+      ]
+    }
+  ]
+},
+
+language: {
+  title: "Language & Accent Support Gap",
+  desc: "Non-English language and accent quality requests. Spanish is most common. French, Portuguese, Arabic, Hindi, and Baltic languages are on the roadmap — not all are live.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Language & Accent",
+      title: "Spanish — Quality, Switching & Accent Authenticity",
+      when: "Comes up with any dealer serving Hispanic customers. Accent quality matters — 'gringo Spanish' is a real deal-breaker. Always have a Spanish call recording ready.",
+      triggers: [
+        {
+          label: '"Can Vini start in Spanish and switch mid-call?"',
+          outcome: "res",
+          question: "My customer base is 90% Hispanic — I need real bilingual capability, not just a translated script.",
+          context: "<strong>What they mean:</strong> They need proof, not a feature claim. Play the call. They want to hear Spanish in action — and they'll know immediately if it's natural or forced.",
+          ae: "\"Let me play you a real Spanish call recording right now. <strong>Vini handles Spanish and can switch mid-conversation</strong> — if a customer starts in English and moves to Spanish, she follows them. [Plays recording]. The bilingual switch is natural — vehicle names stay in English because that's how your customers actually say them.\""
+        },
+        {
+          label: '"The Spanish sounds like gringo Spanish — not native"',
+          outcome: "unr",
+          question: "I tested the Spanish voice and it sounds foreign — for my market, accent authenticity carries real cultural weight. This is disqualifying.",
+          context: "<strong>What they mean:</strong> They've already judged the product and it failed their primary test. Only a better voice demo right now can save this — not promises.",
+          ai: "\"The Spanish voice quality is something we're actively improving — <strong>and I want to play you the most recent version rather than the one you may have heard before.</strong> If it's still not at the level your market needs, I'd rather tell you that honestly now than have you find out with a customer. <em>Can we do a live listen test right now? You judge the current state and tell me if it works for your store.</em>\""
+        }
+      ]
+    },
+    {
+      num: "02",
+      tag: "Pattern · Language & Accent",
+      title: "Other Languages — French, Portuguese, Arabic, Hindi",
+      when: "Requires honesty — don't promise timelines you can't hold. Giving inconsistent timelines across reps destroys credibility.",
+      triggers: [
+        {
+          label: '"90% of my clients are French — will that work?"',
+          outcome: "par",
+          question: "Without French, Vini is irrelevant for my market — this isn't a nice-to-have, it's the make-or-break question.",
+          context: "<strong>What they mean:</strong> Not negotiating — stating a hard requirement. If French isn't there, the deal doesn't make sense for their business regardless of everything else.",
+          ai: "\"French is in development — <strong>I'm not going to give you a date I can't back up.</strong> What I can do is put you on our early access list so you're first in when it goes live. In the meantime, tell me: what percentage of your calls come in English even from French-speaking customers? <em>If there's an English segment, let's capture that today while we build toward full French.</em>\""
+        },
+        {
+          label: '"The main languages are Arabic / Baltic / Polish — dealbreaker"',
+          outcome: "unr",
+          question: "If the language isn't there, the product doesn't work for my market — full stop.",
+          context: "<strong>What they mean:</strong> This is a hard stop. They're not asking for a workaround — they're telling you the deal doesn't exist without this language.",
+          ai: "\"I want to be honest: <strong>[that language] isn't in our near-term roadmap.</strong> Rather than set expectations I can't meet, let me understand your use case better. Are there any English-language touchpoints where Vini could help while you wait? If not, <em>I'd rather revisit in 6 months when we're further along than over-promise today.</em>\""
+        }
+      ]
+    }
+  ]
+},
+
+crm: {
+  title: "CRM / Platform Integration Gap",
+  desc: "CRM and DMS integration gaps — missing syncs, wrong data, social channel connections. All 11 CRM cases in the dataset were partial or unresolved — escalate early.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · CRM Integration",
+      title: "CRM Integration Missing or Misfiring",
+      when: "High-risk area. Reps consistently lack the technical knowledge to handle this confidently. Know the scope before the meeting — escalate to implementation if needed.",
+      triggers: [
+        {
+          label: '"Lead hits CRM — can Vini respond to those automatically?"',
+          outcome: "unr",
+          question: "I want Vini to work leads that already exist in the CRM — not just capture new inbound calls. Is that possible?",
+          context: "<strong>What they mean:</strong> They're asking about a different use case — outbound CRM engagement, not inbound capture. This distinction needs to be handled clearly or it looks like a capability gap.",
+          ai: "\"Let me be precise about what Vini does: <strong>she captures inbound calls and pushes call outcomes, lead data, and appointment notes to your CRM automatically.</strong> She doesn't currently work leads that already exist in the CRM — that's a different workflow. If your biggest need is outbound lead engagement from inside the CRM, I want to confirm that's in scope before we go further. <em>Can we get our implementation lead on a call today so I can give you a definitive answer?</em>\""
+        },
+        {
+          label: '"Why isn\'t the bot running our weekend leads from ELEADS?"',
+          outcome: "unr",
+          question: "We were told weekend outbound was configured and it didn't happen — where did our money go and what actually ran?",
+          context: "<strong>What they mean:</strong> An onboarding promise wasn't delivered. This is an account failure — requires immediate ownership, not an explanation of how the product works.",
+          ai: "\"This shouldn't have happened. <strong>If we committed that weekend outbound was configured and it didn't run, that's on us — not on you.</strong> I'm connecting with our implementation team right now to pull the logs. I'll have a root cause and a fix confirmation back to you within [X hours]. <em>Not next week — today. This is my personal accountability.</em>\""
+        }
+      ]
+    }
+  ]
+},
+
+agent: {
+  title: "Agent Behavior & Logic Issues",
+  desc: "Specific agent behaviors that didn't go as expected — pricing guardrails, repetition loops, double-booking risk, and real-time configuration limitations.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Agent Behavior",
+      title: "Agent Logic & Configuration Concerns",
+      when: "Surfaces when dealers watch calls carefully and catch specific behaviors — whether that's pricing conversations, repeated patterns, or booking logic issues.",
+      triggers: [
+        {
+          label: '"Whatever price is there, it tells it — but won\'t negotiate, right?"',
+          outcome: "res",
+          question: "I need explicit confirmation that the agent will never negotiate — this is a non-negotiable guardrail for my store.",
+          context: "<strong>What they mean:</strong> They've processed the pricing policy and want it confirmed explicitly. Not a question — it's a check that they need to hear confirmed clearly.",
+          ae: "\"We train the agent explicitly to not negotiate any pricing. <strong>If a customer pushes for a better number, Vini says the listing price is the starting point and the team can work with them in-store.</strong> She'll never go lower. She'll never promise a deal. <em>You can also configure her to route all pricing conversations straight to a live rep — no pricing discussion whatsoever.</em>\""
+        },
+        {
+          label: '"I rely on your team for every change — I want to do it myself"',
+          outcome: "unr",
+          question: "Real-time self-serve configuration isn't just a preference — for our operations, the dependency on your team feels like a risk.",
+          context: "<strong>What they mean:</strong> Operational independence matters to them. Being dependent on a vendor for every config change feels fragile — especially if they have high call volume and need fast adjustments.",
+          ai: "\"Self-serve editing is on our roadmap. Right now, <strong>changes go through your dedicated CSM — and the SLA is 24-48 hours, not a ticket queue.</strong> Most dealers find that a managed change process actually reduces errors because there's a QA check before anything goes live. <em>Let me show you what a change request looks like and how fast it gets applied — I want you to see the actual turnaround, not just hear about it.</em>\""
+        }
+      ]
+    }
+  ]
+},
+
+outbound: {
+  title: "Outbound & Follow-up Missing",
+  desc: "Confusion in market about what 'outbound' means — proactive dialing, follow-up campaigns, and what's actually in scope today.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Outbound",
+      title: "Outbound Capability & Campaign Quality",
+      when: "Clients have outbound BDC needs — some think Vini can't make any outbound calls; others expect full CRM-driven outbound sequences. Clarity is everything here.",
+      triggers: [
+        {
+          label: '"I was told the AI cannot make outbound calls — is that true?"',
+          outcome: "unr",
+          question: "I came specifically for outbound functionality and was told it doesn't exist — there's a fundamental mismatch here.",
+          context: "<strong>What they mean:</strong> They may have been misinformed by a rep or marketing. Or there genuinely is a scope mismatch between tiers. Either way — clarity now, not damage control later.",
+          ai: "\"Outbound dialing is available — let me clarify the scope: <strong>Vini makes outbound calls based on your campaigns</strong> — follow-up after a missed appointment, reactivation of a cold lead, or a post-visit check-in. <em>Can you describe your ideal follow-up workflow so I can show you the closest match in how we configure it today?</em>\""
+        },
+        {
+          label: '"She said the customer\'s name over and over — rough outbound"',
+          outcome: "res",
+          question: "The outbound script quality isn't ready for real customers — the name repetition specifically makes it feel robotic and uncomfortable.",
+          context: "<strong>What they mean:</strong> They watched a real outbound call and the script quality failed them. One specific but highly visible problem is now defining their entire perception of the product.",
+          ae: "\"Name repetition in outbound is one of the clearest signals that something feels off — and it's configurable. <strong>We tell Vini to use the customer's name once at the start and once at the close, maximum.</strong> If it's happening more than that, that's a script issue we fix before the next campaign. Let me pull the outbound recording and flag exactly which line is triggering it.\"",
+          alts: [
+            { label: "Long-term follow-up sequences", text: "\"For multi-touch sequences, we set cadences — <strong>call on day 1, again on day 7, escalate on day 14.</strong> It's not a single-touch solution. Describe your ideal follow-up workflow and I'll show you how we configure it.\"" }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+bugs: {
+  title: "Product Not Working / Bugs",
+  desc: "Technical bugs, wrong call status labels, configuration gaps, and general performance complaints from live accounts.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · Product Bugs",
+      title: "Wrong Call Status in Dashboard",
+      when: "Comes up post-go-live when dealers review call reports. The confusion stems from how Vini defines 'resolution' — which is different from the dealer's intuition.",
+      triggers: [
+        {
+          label: '"Most calls show as unresolved but they were handled"',
+          outcome: "res",
+          question: "The dashboard reporting doesn't match reality — why is it showing calls as unresolved when we handled them?",
+          context: "<strong>What they mean:</strong> The product's definition of 'resolved' doesn't match theirs. From the dealer's view: call was answered, customer got help. From Vini's view: no appointment confirmed = not fully resolved.",
+          ae: "\"The 'unresolved' tag doesn't mean the customer was unhappy or unserved. <strong>It means Vini flagged the call as one where the primary goal — usually an appointment — wasn't confirmed.</strong> It's a conservative setting by design so your team follows up on every ambiguous call. <em>We can adjust the threshold — for example, 'only flag if no appointment was set AND the customer asked to be called back.' What definition of 'resolved' makes the most sense for your workflow?</em>\""
+        }
+      ]
+    },
+    {
+      num: "02",
+      tag: "Pattern · Product Bugs",
+      title: "General Performance Complaints",
+      when: "Comes up post-go-live with active frustration from clients with real traffic. A roadmap slide is not the right first move — listen and triage first.",
+      triggers: [
+        {
+          label: '"The product is terrible, it\'s not working right"',
+          outcome: "par",
+          question: "Multiple things are failing simultaneously — the relationship is at risk. I need immediate, specific action, not a product presentation.",
+          context: "<strong>What they mean:</strong> This is a retention moment, not a sales moment. They've reached their frustration threshold and need to feel heard before they'll listen to anything else.",
+          ai: "\"I hear you — and <strong>I'm not going to start with a roadmap.</strong> Can you walk me through the three biggest problems you're seeing right now, in order of priority? I want to know specifically what's wrong so I can tell you which I can fix this week versus what's on a longer timeline. <em>What's the single most frustrating thing happening on your calls right now?</em>\""
+        }
+      ]
+    }
+  ]
+},
+
+resistance: {
+  title: "AI Resistance (Anti-AI)",
+  desc: "Values-based or trust-based resistance to AI. Both cases were unresolved — the standard product pitch doesn't work here. Empathy first, evidence second.",
+  patterns: [
+    {
+      num: "01",
+      tag: "Pattern · AI Resistance",
+      title: "Flat Rejection — Values-Based Anti-AI",
+      when: "Both dataset cases were unresolved. Requires a completely different approach — no demo, no features. Start with empathy and one honest question.",
+      triggers: [
+        {
+          label: '"I\'m not interested in any AI — I want real humans"',
+          outcome: "unr",
+          question: "This is a values statement: AI is bad for my business and my customers. No feature list will change that.",
+          context: "<strong>What they mean:</strong> They believe human connection is core to their business model. They see AI as a threat — not a tool. A demo would make this worse.",
+          ai: "\"I completely respect that — and I'm not here to change your values around human connection. <strong>I want to ask just one question: when your team is all with a customer, or it's 9pm on a Saturday, who's answering the phone?</strong> Because that customer who calls and gets voicemail might buy from the next dealer who picks up. Vini isn't a replacement for your team — she's what happens when your team can't physically be there. <em>Would it be worth hearing just one real call recording — not a demo, a real customer interaction — and you judge for yourself?</em>\""
+        },
+        {
+          label: '"You got our $7,500 and we got no AI"',
+          outcome: "unr",
+          question: "We paid, the product didn't go live, and now I'm angry — this isn't a sales objection, it's an account failure.",
+          context: "<strong>What they mean:</strong> This is an escalation emergency. No amount of sales skill will fix this — it needs immediate ownership, not a product pitch.",
+          ai: "\"I hear you and I understand how frustrating this is. <strong>You paid for something and it's not working — that's on us, and I'm not going to defend it.</strong> I'm escalating this right now. Can we get our implementation lead on a call in the next 30 minutes? I want this resolved today — not next week. <em>What do you need to see in the next 48 hours to feel like this is being taken seriously?</em>\""
+        }
+      ]
+    }
+  ]
+}
+
+}; // end SUBCATS
+
+// ════════════════════════════════════════════════════
+// RENDER LOGIC
+// ════════════════════════════════════════════════════
+
+let activeSubcat = null;
+let activeSubcatBtn = null;
+let openTriggers = {}; // patternIdx_triggerIdx -> bool
+
+function toggleCat(key, btn) {
+  // For disabled buttons do nothing
+  if (btn.classList.contains('disabled')) return;
+  const group = document.getElementById('subcat-' + key);
+  if (!group) return;
+  const isOpen = group.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.subcat-group').forEach(g => g.classList.remove('open'));
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  if (!isOpen) {
+    group.classList.add('open');
+    btn.classList.add('active');
+  }
+}
+
+function loadSubcat(key, btn) {
+  // Deactivate previous
+  if (activeSubcatBtn) activeSubcatBtn.classList.remove('active');
+  btn.classList.add('active');
+  activeSubcatBtn = btn;
+  activeSubcat = key;
+  openTriggers = {};
+  renderSubcat(key);
+}
+
+function renderSubcat(key) {
+  const sc = SUBCATS[key];
+  if (!sc) return;
+
+  // Breadcrumb
+  document.getElementById('breadcrumb').innerHTML = `
+    <span>Vini</span><span class="bc-sep">›</span>
+    <span>Product</span><span class="bc-sep">›</span>
+    <span class="bc-active">${sc.title}</span>
+  `;
+
+  let html = `
+    <div class="subcat-header">
+      <div class="subcat-title">${sc.title}</div>
+      <div class="subcat-desc">${sc.desc}</div>
+    </div>
+  `;
+
+  sc.patterns.forEach((pattern, pi) => {
+    html += `
+    <div class="pattern-block">
+      <div class="pattern-top">
+        <div class="pattern-num">${pattern.num}</div>
+        <div class="pattern-info">
+          <div class="pattern-tag">${pattern.tag}</div>
+          <div class="pattern-title">${pattern.title}</div>
+          <div class="pattern-when">${pattern.when}</div>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="trigger-section-label">Trigger Phrases from Calls — click to reveal the question & response</div>
+        <div class="trigger-chips">`;
+
+    pattern.triggers.forEach((trigger, ti) => {
+      const id = `${key}_${pi}_${ti}`;
+      html += `
+          <button class="trigger-chip" onclick="toggleTrigger('${id}', this)" id="chip_${id}">
+            <span class="out-dot ${trigger.outcome}"></span>
+            ${trigger.label}
+            <span class="chip-arrow">›</span>
+          </button>`;
+    });
+
+    html += `</div>`;
+
+    // Question panels — one per trigger, hidden by default
+    pattern.triggers.forEach((trigger, ti) => {
+      const id = `${key}_${pi}_${ti}`;
+
+      let responseHtml = '';
+      if (trigger.ae) {
+        responseHtml += `
+          <div class="response-block ae">
+            <div class="response-label">✅ What the AE said that worked</div>
+            <p>${trigger.ae}</p>
+          </div>`;
+      }
+      if (trigger.ai) {
+        responseHtml += `
+          <div class="response-block ai">
+            <div class="response-label">🔵 Recommended Response</div>
+            <p>${trigger.ai}</p>
+          </div>`;
+      }
+      if (trigger.ae && trigger.ai) {
+        // Both — ae first (resolved context) then ai improvement
+      }
+
+      let altHtml = '';
+      if (trigger.alts && trigger.alts.length) {
+        altHtml = `<div class="alt-label">Alternative Angles</div><div class="alt-grid">`;
+        trigger.alts.forEach(alt => {
+          altHtml += `
+            <div class="alt-card">
+              <div class="alt-card-label">${alt.label}</div>
+              <p>${alt.text}</p>
+            </div>`;
+        });
+        altHtml += `</div>`;
+      }
+
+      html += `
+      <div class="question-panel" id="panel_${id}">
+        <div class="qp-inner">
+          <div class="qp-question-label">What the client is really asking</div>
+          <div class="qp-question">${trigger.question}</div>
+          <div class="qp-context">${trigger.context}</div>
+          <div class="qp-divider"></div>
+          ${responseHtml}
+          ${altHtml}
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`; // pattern-body + pattern-block
+  });
+
+  document.getElementById('contentArea').innerHTML = html;
+  // Scroll to top
+  document.getElementById('contentArea').scrollTop = 0;
+}
+
+function toggleTrigger(id, chipEl) {
+  const panel = document.getElementById('panel_' + id);
+  const isOpen = panel.classList.contains('visible');
+
+  // Close all panels and chips in this pattern block
+  const block = chipEl.closest('.pattern-block');
+  block.querySelectorAll('.question-panel').forEach(p => p.classList.remove('visible'));
+  block.querySelectorAll('.trigger-chip').forEach(c => c.classList.remove('active'));
+
+  if (!isOpen) {
+    panel.classList.add('visible');
+    chipEl.classList.add('active');
+    // Smooth scroll to panel
+    setTimeout(() => {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+}
+</script>
+</body>
+</html>
