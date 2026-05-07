@@ -1,23 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spyne Product</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 16px;
+            width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            background: #3b82f6;
+            color: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: scale(1.03);
+        }
+
+        p {
+            color: #cbd5e1;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Spyne Product</h1>
+    <div class="container">
+        <h1>Spyne Product</h1>
 
-    <p>
-        <a href="vini_interview_guide_Final.html">
+        <p>Select a page to open</p>
+
+        <a class="btn" href="vini_interview_guide_Final.html">
             Open Interview Guide
         </a>
-    </p>
 
-    <p>
-        <a href="vini_playbook_v4.html">
+        <a class="btn" href="vini_playbook_v4.html">
             Open Playbook
         </a>
-    </p>
+    </div>
 
 </body>
 </html>
