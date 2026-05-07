@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vini AI — Interview Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    /* Purple — Sales */
+    --purple-deep: #1a0a2e;
+    --purple-dark: #2d1458;
+    --purple-mid: #6b21d6;
+    --purple-bright: #8b3ff5;
+    --purple-light: #c084fc;
+    --purple-pale: #f3e8ff;
+    /* Blue — Service Inbound */
+    --blue-deep: #060f1e;
+    --blue-dark: #0d2145;
+    --blue-mid: #1d4ed8;
+    --blue-bright: #2563eb;
+    --blue-light: #93c5fd;
+    --blue-pale: #eff6ff;
+    /* Teal — Recall Outbound */
+    --teal-deep: #042f2e;
+    --teal-mid: #0f766e;
+    --teal-bright: #0d9488;
+    --teal-light: #5eead4;
+    --teal-pale: #f0fdfa;
+    --teal-border: #99f6e4;
+    /* Neutrals */
+    --white: #ffffff;
+    --gray-50: #fafafa;
+    --gray-100: #f4f4f5;
+    --gray-200: #e4e4e7;
+    --gray-400: #a1a1aa;
+    --gray-600: #52525b;
+    --gray-800: #27272a;
+    --red: #dc2626;
+    --amber-soft: #fffbeb;
+    --amber-border: #fde68a;
+    --amber-text: #92400e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: linear-gradient(135deg, #0f051f 0%, #1a0a2e 35%, #0d2145 70%, #0a1628 100%);
+    padding: 36px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,63,245,0.2) 0%, transparent 70%);
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 35%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%);
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .page-header h1 .em-sales {
+    font-style: normal;
+    color: var(--purple-light);
+  }
+  .page-header h1 .em-service {
+    font-style: normal;
+    color: var(--blue-light);
+  }
+  .page-header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    max-width: 600px;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .filter-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gray-400);
+    white-space: nowrap;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .filter-group label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--gray-600);
+    white-space: nowrap;
+  }
+  .filter-select {
+    background: var(--gray-50);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 7px 32px 7px 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--gray-800);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 160px;
+  }
+  .filter-select:focus {
+    border-color: var(--purple-bright);
+    box-shadow: 0 0 0 3px rgba(139,63,245,0.1);
+  }
+  .filter-select.product-select:focus { border-color: var(--purple-bright); }
+  .filter-select.team-select:focus { border-color: var(--blue-bright); }
+
+  .filter-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--gray-200);
+  }
+  .filter-status {
+    margin-left: auto;
+    font-size: 11.5px;
+    color: var(--gray-400);
+    font-style: italic;
+  }
+  .filter-status strong {
+    color: var(--gray-600);
+    font-style: normal;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    padding: 32px 48px 60px;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  /* ── PRODUCT TRACK HEADER ── */
+  .product-track-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 36px 0 28px;
+  }
+  .product-track-header:first-child { margin-top: 0; }
+  .track-line {
+    flex: 1;
+    height: 1px;
+    background: var(--gray-200);
+  }
+  .track-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .track-pill.sales {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-dark) 100%);
+    color: var(--white);
+    box-shadow: 0 2px 12px rgba(139,63,245,0.25);
+  }
+  .track-pill.service-in {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, #1e3a8a 100%);
+    color: var(--white);
+    box-shadow: 0 2px 12px rgba(37,99,235,0.25);
+  }
+  .track-pill.service-out {
+    background: linear-gradient(135deg, var(--teal-deep) 0%, #134e4a 100%);
+    color: var(--white);
+    box-shadow: 0 2px 12px rgba(13,148,136,0.25);
+  }
+  .track-pill .track-sub {
+    font-size: 10.5px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 32px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--purple-bright);
+  }
+  .section-header.svc { border-bottom-color: var(--blue-bright); }
+  .section-header.outbound-header { border-bottom-color: var(--teal-bright); }
+
+  .section-number {
+    width: 28px; height: 28px;
+    background: var(--purple-bright);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-number.svc { background: var(--blue-bright); }
+  .section-number.outbound { background: var(--teal-bright); }
+
+  .section-title-block h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--purple-deep);
+    letter-spacing: -0.01em;
+  }
+  .section-title-block h2.svc { color: var(--blue-deep); }
+  .section-title-block h2.outbound-title { color: var(--teal-deep); }
+  .section-title-block p {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 2px;
+    font-style: italic;
+  }
+  .section-optional-tag {
+    margin-left: auto;
+    background: var(--amber-soft);
+    border: 1px solid var(--amber-border);
+    color: var(--amber-text);
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ── TABLE ── */
+  .q-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 1px var(--gray-200);
+  }
+  .q-table thead tr { background: var(--purple-deep); }
+  .q-table.svc-table thead tr { background: var(--blue-deep); }
+  .q-table.outbound-table thead tr { background: var(--teal-deep); }
+  .q-table thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .q-table tbody tr {
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.15s;
+  }
+  .q-table tbody tr:last-child { border-bottom: none; }
+  .q-table tbody tr:hover { background: #faf5ff; }
+  .q-table.svc-table tbody tr:hover { background: #eff6ff; }
+  .q-table.outbound-table tbody tr:hover { background: var(--teal-pale); }
+  .q-table tbody tr.optional-row { background: var(--gray-50); }
+  .q-table tbody tr.optional-row:hover { background: #faf5ff; }
+  .q-table.svc-table tbody tr.optional-row:hover { background: #eff6ff; }
+  .q-table.outbound-table tbody tr.optional-row:hover { background: var(--teal-pale); }
+  .q-table td {
+    padding: 14px 16px;
+    vertical-align: top;
+    font-size: 13px;
+  }
+
+  .col-num   { width: 52px; }
+  .col-topic { width: 130px; }
+  .col-q     { width: auto; }
+  .col-team  { width: 115px; }
+
+  .q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--purple-mid);
+    font-weight: 500;
+    background: var(--purple-pale);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .q-num.svc { color: var(--blue-mid); background: var(--blue-pale); }
+  .q-num.outbound { color: var(--teal-mid); background: var(--teal-pale); }
+
+  .topic-badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--purple-dark);
+    background: var(--purple-pale);
+    border: 1px solid #ddd6fe;
+    padding: 2px 8px;
+    border-radius: 4px;
+    line-height: 1.5;
+  }
+  .topic-badge.svc {
+    color: #1e3a8a;
+    background: var(--blue-pale);
+    border-color: #bfdbfe;
+  }
+  .topic-badge.outbound {
+    color: var(--teal-mid);
+    background: var(--teal-pale);
+    border-color: var(--teal-border);
+  }
+
+  .q-main {
+    font-weight: 600;
+    color: var(--gray-800);
+    line-height: 1.55;
+  }
+  .q-main .req-star {
+    color: var(--red);
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 2px;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  .q-fallback {
+    font-size: 12px;
+    color: var(--gray-600);
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 7px;
+    padding-top: 7px;
+    border-top: 1px dashed var(--gray-200);
+  }
+  .q-fallback::before {
+    content: 'If needed: ';
+    color: var(--purple-mid);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .q-fallback.svc::before { color: var(--blue-mid); }
+  .q-fallback.outbound-fallback::before { color: var(--teal-mid); }
+
+  .team-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-bottom: 3px;
+  }
+  .team-sales   { background: #eff6ff; color: #1d4ed8; }
+  .team-onboard { background: #f0fdf4; color: #15803d; }
+  .team-cs      { background: #fff7ed; color: #c2410c; }
+  .team-product { background: #fdf4ff; color: #7e22ce; }
+
+  /* empty-section notice */
+  .no-rows-notice {
+    display: none;
+    text-align: center;
+    padding: 18px;
+    font-size: 12px;
+    color: var(--gray-400);
+    font-style: italic;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 1px var(--gray-200);
+  }
+
+  /* ── CONDENSED ── */
+  .condensed-wrapper {
+    border-radius: 14px;
+    padding: 30px 32px;
+    margin-top: 40px;
+  }
+  .condensed-wrapper.sales-condensed {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, #2a0f5c 100%);
+  }
+  .condensed-wrapper.svc-condensed {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, #0d2a5e 100%);
+  }
+  .condensed-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .condensed-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .condensed-header .time-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .sales-condensed .time-badge {
+    background: rgba(139,63,245,0.4);
+    border: 1px solid rgba(192,132,252,0.4);
+    color: var(--purple-light);
+  }
+  .svc-condensed .time-badge {
+    background: rgba(37,99,235,0.4);
+    border: 1px solid rgba(147,197,253,0.4);
+    color: var(--blue-light);
+  }
+  .condensed-subtext {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 22px;
+    font-style: italic;
+  }
+  .condensed-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .condensed-block {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 9px;
+    padding: 16px 18px;
+  }
+  .condensed-block.outbound-block {
+    background: rgba(13,148,136,0.1);
+    border-color: rgba(94,234,212,0.15);
+  }
+  .condensed-block h3 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .sales-condensed .condensed-block h3 { color: var(--purple-light); }
+  .svc-condensed .condensed-block h3 { color: var(--blue-light); }
+  .condensed-block.outbound-block h3 { color: var(--teal-light); }
+  .condensed-block h3 .block-time {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .condensed-block ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .condensed-block ul li {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.45;
+  }
+  .condensed-block ul li::before {
+    content: '—';
+    flex-shrink: 0;
+  }
+  .sales-condensed .condensed-block ul li::before { color: var(--purple-light); }
+  .svc-condensed .condensed-block ul li::before { color: var(--blue-light); }
+  .condensed-block.outbound-block ul li::before { color: var(--teal-light); }
+  .condensed-block ul li .li-ref {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    white-space: nowrap;
+  }
+  .sales-condensed .li-ref { color: rgba(192,132,252,0.7); }
+  .svc-condensed .li-ref { color: rgba(147,197,253,0.7); }
+  .condensed-block.outbound-block .li-ref { color: rgba(94,234,212,0.7); }
+
+  .condensed-track-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+  .condensed-track-label.inbound {
+    background: rgba(37,99,235,0.25);
+    border: 1px solid rgba(147,197,253,0.3);
+    color: var(--blue-light);
+  }
+  .condensed-track-label.outbound-label {
+    background: rgba(13,148,136,0.25);
+    border: 1px solid rgba(94,234,212,0.3);
+    color: var(--teal-light);
+    margin-top: 22px;
+  }
+  .condensed-note {
+    margin-top: 18px;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    font-style: italic;
+  }
+  .sales-condensed .condensed-note {
+    background: rgba(139,63,245,0.15);
+    border-left: 3px solid var(--purple-bright);
+  }
+  .svc-condensed .condensed-note {
+    background: rgba(37,99,235,0.15);
+    border-left: 3px solid var(--blue-bright);
+  }
+
+  @media print {
+    .filter-bar { position: static; box-shadow: none; }
+    body { background: white; font-size: 12px; }
+    .page-header { padding: 24px 32px 20px; }
+    .content { padding: 20px 32px 40px; }
+    .condensed-wrapper { break-inside: avoid; }
+    .section { break-inside: avoid; }
+    .q-table { box-shadow: none; border: 1px solid var(--gray-200); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-badge">📋 Internal Use Only</div>
+  <h1>Vini AI — <span class="em-sales">Sales</span> &amp; <span class="em-service">Service</span> Interview Guide</h1>
+  <p>Use this guide when interviewing customers for Vini AI case studies. Filter by product and team below. Lead with the primary question; use the fallback in italics if the customer needs prompting.</p>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filter</span>
+
+  <div class="filter-group">
+    <label for="product-filter">Select Product</label>
+    <select id="product-filter" class="filter-select product-select" onchange="applyFilters()">
+      <option value="both">Sales + Service (Both)</option>
+      <option value="sales">Sales</option>
+      <option value="service">Service</option>
+    </select>
+  </div>
+
+  <div class="filter-divider"></div>
+
+  <div class="filter-group">
+    <label for="team-filter">Team</label>
+    <select id="team-filter" class="filter-select team-select" onchange="applyFilters()">
+      <option value="all">All Teams</option>
+      <option value="onboard">Onboarding</option>
+      <option value="cs">Customer Success</option>
+      <option value="sales">Sales</option>
+      <option value="product">Product</option>
+    </select>
+  </div>
+
+  <span class="filter-status" id="filter-status"></span>
+</div>
+
+<div class="content">
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  SALES INBOUND SECTIONS                    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="product-track-header" data-product="sales">
+    <div class="track-line"></div>
+    <div class="track-pill sales">🎯 Sales Inbound <span class="track-sub">— Q1–Q22</span></div>
+    <div class="track-line"></div>
+  </div>
+
+  <!-- Section 01 — Business Context (Sales) -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title-block">
+        <h2>Business Context</h2>
+        <p>Sets the stage. Helps readers understand the dealership's scale and operating environment.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="sales">
+          <td><span class="q-num">Q1</span></td>
+          <td><span class="topic-badge">Scale</span></td>
+          <td>
+            <div class="q-main">How many vehicles do you sell or service per month? <span class="req-star">*</span></div>
+            <div class="q-fallback">Is it closer to 100, 200, or 300+ units a month?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A1 — Sales Call Coverage & Baseline Gaps -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A1</div>
+      <div class="section-title-block">
+        <h2>Sales Call Coverage &amp; Baseline Gaps</h2>
+        <p>Establishes the size of the problem. Quantifies missed demand before Vini.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="sales,onboard">
+          <td><span class="q-num">Q2</span></td>
+          <td><span class="topic-badge">Call Volume</span></td>
+          <td>
+            <div class="q-main">How many inbound sales calls were you receiving per month before Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback">On a typical day, roughly how many sales calls came in? 20, 50, 100+?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span><br><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num">Q3</span></td>
+          <td><span class="topic-badge">After-Hours</span></td>
+          <td>
+            <div class="q-main">Were after-hours sales calls being handled at all? <span class="req-star">*</span></div>
+            <div class="q-fallback">Did those calls go to voicemail? Were they returned the next day? How many do you think you were losing?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num">Q4</span></td>
+          <td><span class="topic-badge">Peak Hours</span></td>
+          <td>
+            <div class="q-main">Were there specific hours or days where sales call pressure was hardest to manage? <span class="req-star">*</span></div>
+            <div class="q-fallback">End of month? Saturday afternoons? Right before close?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num">Q5</span></td>
+          <td><span class="topic-badge">Missed Calls</span></td>
+          <td>
+            <div class="q-main">Roughly what percentage of inbound sales calls were being missed or poorly handled? <span class="req-star">*</span></div>
+            <div class="q-fallback">Out of 10 calls, how many slipped — closer to 2, 4, or more?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A2 — Speed to Lead -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A2</div>
+      <div class="section-title-block">
+        <h2>Speed to Lead</h2>
+        <p>Covers the response time gap — one of the highest-impact metrics in automotive sales.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="sales,onboard">
+          <td><span class="q-num">Q6</span></td>
+          <td><span class="topic-badge">Response Time</span></td>
+          <td>
+            <div class="q-main">How quickly were inbound sales calls and internet leads being responded to before Vini — whether from the phone, Cars.com, CarGurus, or your website? <span class="req-star">*</span></div>
+            <div class="q-fallback">Was it within a minute for calls? For internet leads, was it the same hour, same day, or longer? Did it vary by shift?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span><br><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="sales">
+          <td><span class="q-num">Q7</span></td>
+          <td><span class="topic-badge">Conversion Impact</span></td>
+          <td>
+            <div class="q-main">Did delayed responses affect conversion? <span class="req-star">*</span></div>
+            <div class="q-fallback">Were customers already talking to another dealer by the time you got back to them?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A3 — Sales Conversion Baseline -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A3</div>
+      <div class="section-title-block">
+        <h2>Sales Conversion Baseline (Before Vini)</h2>
+        <p>Establishes the "before" benchmark so Vini's impact can be measured against it.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="onboard">
+          <td><span class="q-num">Q8</span></td>
+          <td><span class="topic-badge">Qualification Rate</span></td>
+          <td>
+            <div class="q-main">What percentage of inbound sales calls turned into qualified leads? <span class="req-star">*</span></div>
+            <div class="q-fallback">Out of 10 calls, how many were serious, ready buyers? Around 3–4, or lower?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num">Q9</span></td>
+          <td><span class="topic-badge">Appointment Rate</span></td>
+          <td>
+            <div class="q-main">Of those qualified leads, how many converted into appointments? <span class="req-star">*</span></div>
+            <div class="q-fallback">Out of 10 qualified leads, how many actually scheduled a visit?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A4 — Vini Sales Inbound Performance -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A4</div>
+      <div class="section-title-block">
+        <h2>Vini Sales Inbound Performance</h2>
+        <p>Pull dashboard data before the interview. Use these questions to confirm numbers and add context.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="product">
+          <td><span class="q-num">Q10</span></td>
+          <td><span class="topic-badge">Calls Handled</span></td>
+          <td>
+            <div class="q-main">How many inbound sales calls is Vini handling per month now? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num">Q11</span></td>
+          <td><span class="topic-badge">Qualification Rate</span></td>
+          <td>
+            <div class="q-main">What percentage of Vini-handled sales calls are turning into qualified leads? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num">Q12</span></td>
+          <td><span class="topic-badge">Appointment Rate</span></td>
+          <td>
+            <div class="q-main">Of those qualified leads, how many are booking appointments? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num">Q13</span></td>
+          <td><span class="topic-badge">Call Split</span></td>
+          <td>
+            <div class="q-main">What's the split between after-hours calls and peak overflow calls in Vini's volume? <span class="req-star">*</span></div>
+            <div class="q-fallback">Is most of what Vini handles happening after closing, or during the day when the team is stretched?</div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A5 — Sales Revenue & Business Impact -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A5</div>
+      <div class="section-title-block">
+        <h2>Sales Revenue &amp; Business Impact</h2>
+        <p>The section that makes a case study worth publishing. Let the customer arrive at the number — don't suggest it.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="cs">
+          <td><span class="q-num">Q14</span></td>
+          <td><span class="topic-badge">Net-New Impact</span></td>
+          <td>
+            <div class="q-main">Of the appointments Vini booked — how many would you say would have been missed entirely without it? <span class="req-star">*</span></div>
+            <div class="q-fallback">Would most of them be net-new? Or would some customers have found another way to reach you?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr data-teams="cs">
+          <td><span class="q-num">Q15</span></td>
+          <td><span class="topic-badge">Revenue Impact</span></td>
+          <td>
+            <div class="q-main">Have you been able to put a revenue number to what Vini has generated or recovered? <span class="req-star">*</span></div>
+            <div class="q-fallback">If not: Using your average front-end gross per unit, how would you estimate the impact?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q16</span></td>
+          <td><span class="topic-badge">Headcount</span></td>
+          <td>
+            <div class="q-main">Did Vini help you handle more sales demand without adding BDC headcount?</div>
+            <div class="q-fallback">Were you considering hiring to close the coverage gap before Vini came in?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q17</span></td>
+          <td><span class="topic-badge">Urgency / Upsell</span></td>
+          <td>
+            <div class="q-main">Did urgency cues from Vini — like incentive mentions or limited availability prompts — seem to accelerate showroom visits?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A6 — Sales Team & Customer Experience -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A6</div>
+      <div class="section-title-block">
+        <h2>Sales Team &amp; Customer Experience</h2>
+        <p>The qualitative layer. This is where quotes come from. Entire section is optional but highly recommended for narrative-rich case studies.</p>
+      </div>
+      <div class="section-optional-tag">Entire Section Optional</div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q18</span></td>
+          <td><span class="topic-badge">Customer Feedback</span></td>
+          <td>
+            <div class="q-main">How have customers responded to Vini on sales calls? Have you had any direct feedback?</div>
+            <div class="q-fallback">Do customers know they're talking to AI? Has anyone mentioned it — positively or negatively?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q19</span></td>
+          <td><span class="topic-badge">Team Reaction</span></td>
+          <td>
+            <div class="q-main">How has your sales BDC team reacted to Vini?</div>
+            <div class="q-fallback">Did they see it as a threat, a relief, or something else? Has their day-to-day changed?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q20</span></td>
+          <td><span class="topic-badge">Standout Moment</span></td>
+          <td>
+            <div class="q-main">Was there a specific sales call or moment where Vini performed in a way that surprised you or the team?</div>
+            <div class="q-fallback">A late-night booking, a difficult customer, a deal nobody expected to close</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q21</span></td>
+          <td><span class="topic-badge">Onboarding &amp; Support</span></td>
+          <td>
+            <div class="q-main">How has the onboarding and ongoing support experience been?</div>
+            <div class="q-fallback">Has the product evolved based on your feedback?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section A7 — Closing & Quote Capture -->
+  <div class="section" data-product="sales">
+    <div class="section-header">
+      <div class="section-number">A7</div>
+      <div class="section-title-block">
+        <h2>Closing &amp; Quote Capture</h2>
+        <p>Always end here. Give the customer space to speak freely — this is where the publishable quote lives.</p>
+      </div>
+    </div>
+    <table class="q-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num">Q22</span></td>
+          <td><span class="topic-badge">Open Close</span></td>
+          <td>
+            <div class="q-main">Is there anything else about your experience with Vini that you'd want us to capture?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  SERVICE SECTIONS — INBOUND                -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="product-track-header" data-product="service">
+    <div class="track-line"></div>
+    <div class="track-pill service-in">📞 Service Inbound <span class="track-sub">— Q1–Q22</span></div>
+    <div class="track-line"></div>
+  </div>
+
+  <!-- Section 01 — Business Context (Service) -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">01</div>
+      <div class="section-title-block">
+        <h2 class="svc">Business Context</h2>
+        <p>Sets the stage. Helps readers understand the dealership's service scale and operating environment.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="sales">
+          <td><span class="q-num svc">Q1</span></td>
+          <td><span class="topic-badge svc">Scale</span></td>
+          <td>
+            <div class="q-main">How many vehicles do you service per month? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Is it closer to 100, 300, or 500+ ROs a month?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B1 — Service Call Coverage & Baseline Gaps -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B1</div>
+      <div class="section-title-block">
+        <h2 class="svc">Service Call Coverage &amp; Baseline Gaps</h2>
+        <p>Establishes the size of the problem. Quantifies missed service demand before Vini.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="sales,onboard">
+          <td><span class="q-num svc">Q2</span></td>
+          <td><span class="topic-badge svc">Call Volume</span></td>
+          <td>
+            <div class="q-main">How many inbound service calls were you receiving per month before Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">On a typical day, roughly how many service calls came in? 50, 100, 200+?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span><br><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num svc">Q3</span></td>
+          <td><span class="topic-badge svc">After-Hours</span></td>
+          <td>
+            <div class="q-main">Were after-hours service calls being handled at all? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Did those calls go to voicemail? Were they returned next morning? How many do you think you were losing?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num svc">Q4</span></td>
+          <td><span class="topic-badge svc">Peak Hours</span></td>
+          <td>
+            <div class="q-main">Were there specific hours or days where service call pressure was hardest to manage? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Opening rush, end of day, Saturdays? Was there a specific time when advisors were consistently overwhelmed?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num svc">Q5</span></td>
+          <td><span class="topic-badge svc">Missed Calls</span></td>
+          <td>
+            <div class="q-main">Roughly what percentage of inbound service calls were being missed or not properly handled? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Out of 10 service calls, how many slipped — closer to 2, 4, or more?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B2 — Speed to Service -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B2</div>
+      <div class="section-title-block">
+        <h2 class="svc">Speed to Service</h2>
+        <p>Covers how quickly service demand was being captured and responded to before Vini.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="sales,onboard">
+          <td><span class="q-num svc">Q6</span></td>
+          <td><span class="topic-badge svc">Response Time</span></td>
+          <td>
+            <div class="q-main">How quickly were inbound service calls being answered before Vini — both during business hours and when advisors were tied up? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Were callers put on hold for long periods? Did calls go unanswered during busy windows like the opening rush or end of day?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span><br><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="sales">
+          <td><span class="q-num svc">Q7</span></td>
+          <td><span class="topic-badge svc">Revenue Impact</span></td>
+          <td>
+            <div class="q-main">Did slow or missed responses cost you service appointments? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Were customers booking with a competitor or simply not getting their car serviced because they couldn't reach you?</div>
+          </td>
+          <td><span class="team-tag team-sales">Sales</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B3 — Service Booking Baseline -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B3</div>
+      <div class="section-title-block">
+        <h2 class="svc">Service Booking Baseline (Before Vini)</h2>
+        <p>Establishes the "before" benchmark so Vini's impact can be measured against it.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="onboard">
+          <td><span class="q-num svc">Q8</span></td>
+          <td><span class="topic-badge svc">After-Hours Booking</span></td>
+          <td>
+            <div class="q-main">How were service appointments being booked after hours before Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Voicemail callbacks? Online forms? Did most customers just call back the next morning?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num svc">Q9</span></td>
+          <td><span class="topic-badge svc">Booking Rate</span></td>
+          <td>
+            <div class="q-main">What percentage of inbound service calls converted into booked appointments before Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Out of 10 service calls, how many resulted in a scheduled appointment?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B4 — Vini Service Inbound Performance -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B4</div>
+      <div class="section-title-block">
+        <h2 class="svc">Vini Service Inbound Performance</h2>
+        <p>Pull dashboard data before the interview. Use these questions to confirm numbers and add context.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="product">
+          <td><span class="q-num svc">Q10</span></td>
+          <td><span class="topic-badge svc">Calls Handled</span></td>
+          <td>
+            <div class="q-main">How many inbound service calls is Vini handling per month now? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num svc">Q11</span></td>
+          <td><span class="topic-badge svc">Booking Rate</span></td>
+          <td>
+            <div class="q-main">What percentage of Vini-handled service calls are converting into booked appointments? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product,cs">
+          <td><span class="q-num svc">Q12</span></td>
+          <td><span class="topic-badge svc">Additional ROs</span></td>
+          <td>
+            <div class="q-main">How many additional service ROs per month are you attributing to Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Compared to before Vini, how many more repair orders are you seeing per month?</div>
+          </td>
+          <td><span class="team-tag team-product">Product</span><br><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num svc">Q13</span></td>
+          <td><span class="topic-badge svc">Call Split</span></td>
+          <td>
+            <div class="q-main">What's the split between after-hours calls and peak overflow calls in Vini's service volume? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Is most of what Vini handles happening after closing, or during the day when advisors are tied up with customers?</div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B5 — Service Revenue & Business Impact -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B5</div>
+      <div class="section-title-block">
+        <h2 class="svc">Service Revenue &amp; Business Impact</h2>
+        <p>The section that makes a case study worth publishing. Let the customer arrive at the number — don't suggest it.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="cs">
+          <td><span class="q-num svc">Q14</span></td>
+          <td><span class="topic-badge svc">Net-New Impact</span></td>
+          <td>
+            <div class="q-main">Of the service appointments Vini booked — how many would have been missed entirely without it? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">Would most of them be net-new revenue? Or would those customers have found another time to call?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr data-teams="cs">
+          <td><span class="q-num svc">Q15</span></td>
+          <td><span class="topic-badge svc">Revenue Impact</span></td>
+          <td>
+            <div class="q-main">Have you been able to put a revenue figure to the additional service volume Vini is generating? <span class="req-star">*</span></div>
+            <div class="q-fallback svc">If not: What's your average RO value, and how would you size the monthly impact?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q16</span></td>
+          <td><span class="topic-badge svc">Headcount</span></td>
+          <td>
+            <div class="q-main">Has Vini allowed you to handle more service volume without adding advisors or BDC staff?</div>
+            <div class="q-fallback svc">Were you considering adding headcount to address the coverage gap before Vini?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q17</span></td>
+          <td><span class="topic-badge svc">No-Shows</span></td>
+          <td>
+            <div class="q-main">Have no-show or cancellation rates changed since Vini started handling confirmations and reminders?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B6 — Service Team & Customer Experience -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B6</div>
+      <div class="section-title-block">
+        <h2 class="svc">Service Team &amp; Customer Experience</h2>
+        <p>The qualitative layer. This is where quotes come from. Entire section is optional but highly recommended for narrative-rich case studies.</p>
+      </div>
+      <div class="section-optional-tag">Entire Section Optional</div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q18</span></td>
+          <td><span class="topic-badge svc">Customer Feedback</span></td>
+          <td>
+            <div class="q-main">How have service customers responded to Vini? Have you had any direct feedback?</div>
+            <div class="q-fallback svc">Do customers know they're talking to AI? Has anyone mentioned it — positively or negatively?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q19</span></td>
+          <td><span class="topic-badge svc">Team Reaction</span></td>
+          <td>
+            <div class="q-main">How have your service advisors and BDC team reacted to Vini?</div>
+            <div class="q-fallback svc">Did they see it as a threat, a relief, or something else? Has their day-to-day changed?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q20</span></td>
+          <td><span class="topic-badge svc">Standout Moment</span></td>
+          <td>
+            <div class="q-main">Was there a specific service call or interaction where Vini handled something in a way that impressed you?</div>
+            <div class="q-fallback svc">A late-night booking, a difficult customer, a high-value repair that came in after hours</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q21</span></td>
+          <td><span class="topic-badge svc">Onboarding &amp; Support</span></td>
+          <td>
+            <div class="q-main">How has the onboarding and ongoing support experience been?</div>
+            <div class="q-fallback svc">Has the product evolved based on your feedback? Has the integration with your scheduler worked smoothly?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section B7 — Closing & Quote Capture (Service Inbound) -->
+  <div class="section" data-product="service">
+    <div class="section-header svc">
+      <div class="section-number svc">B7</div>
+      <div class="section-title-block">
+        <h2 class="svc">Closing &amp; Quote Capture</h2>
+        <p>Always end here. Give the customer space to speak freely — this is where the publishable quote lives.</p>
+      </div>
+    </div>
+    <table class="q-table svc-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num svc">Q22</span></td>
+          <td><span class="topic-badge svc">Open Close</span></td>
+          <td>
+            <div class="q-main">Is there anything else about your experience with Vini Service Inbound that you'd want us to capture?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  SERVICE SECTIONS — OUTBOUND RECALL        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="product-track-header" data-product="service">
+    <div class="track-line"></div>
+    <div class="track-pill service-out">📤 Service Outbound — Recall <span class="track-sub">— Q23–Q34</span></div>
+    <div class="track-line"></div>
+  </div>
+
+  <!-- Section C1 — Recall Baseline & Challenges -->
+  <div class="section" data-product="service">
+    <div class="section-header outbound-header">
+      <div class="section-number outbound">C1</div>
+      <div class="section-title-block">
+        <h2 class="outbound-title">Recall Baseline &amp; Challenges</h2>
+        <p>Establishes how recall outreach was managed before Vini and what was broken about it.</p>
+      </div>
+    </div>
+    <table class="q-table outbound-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="onboard">
+          <td><span class="q-num outbound">Q23</span></td>
+          <td><span class="topic-badge outbound">Recall Volume</span></td>
+          <td>
+            <div class="q-main">How large is your open recall backlog, and roughly how many recall customers do you need to contact each month? <span class="req-star">*</span></div>
+            <div class="q-fallback outbound-fallback">Is it tens of customers, hundreds? Has the backlog been growing or is it manageable?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num outbound">Q24</span></td>
+          <td><span class="topic-badge outbound">Previous Process</span></td>
+          <td>
+            <div class="q-main">How was recall outreach being managed before Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback outbound-fallback">Manual calls from the BDC or advisors? A third-party vendor? Were there customers who were never contacted?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr data-teams="onboard">
+          <td><span class="q-num outbound">Q25</span></td>
+          <td><span class="topic-badge outbound">Pain Points</span></td>
+          <td>
+            <div class="q-main">What was your biggest frustration with how recall outreach worked before Vini? <span class="req-star">*</span></div>
+            <div class="q-fallback outbound-fallback">Was it missed contacts, compliance risk, BDC bandwidth, or the quality of conversations?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="onboard">
+          <td><span class="q-num outbound">Q26</span></td>
+          <td><span class="topic-badge outbound">Compliance Risk</span></td>
+          <td>
+            <div class="q-main">Were there any compliance or liability concerns around your recall outreach process before Vini?</div>
+            <div class="q-fallback outbound-fallback">Were you worried about being unable to prove contact was attempted, or about gaps in your recall completion records?</div>
+          </td>
+          <td><span class="team-tag team-onboard">Onboarding</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section C2 — Vini Recall Outbound Performance -->
+  <div class="section" data-product="service">
+    <div class="section-header outbound-header">
+      <div class="section-number outbound">C2</div>
+      <div class="section-title-block">
+        <h2 class="outbound-title">Vini Recall Outbound Performance</h2>
+        <p>Pull dashboard data before the interview. Use these questions to confirm numbers and add context.</p>
+      </div>
+    </div>
+    <table class="q-table outbound-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="product">
+          <td><span class="q-num outbound">Q27</span></td>
+          <td><span class="topic-badge outbound">Calls Made</span></td>
+          <td>
+            <div class="q-main">How many recall outreach calls is Vini making per week or per month? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num outbound">Q28</span></td>
+          <td><span class="topic-badge outbound">Connection Rate</span></td>
+          <td>
+            <div class="q-main">What percentage of recall calls are resulting in a live connection with the customer? <span class="req-star">*</span></div>
+            <div class="q-fallback outbound-fallback">Out of every 100 recall calls Vini makes, roughly how many customers are actually picking up?</div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+        <tr data-teams="product">
+          <td><span class="q-num outbound">Q29</span></td>
+          <td><span class="topic-badge outbound">Booking Rate</span></td>
+          <td>
+            <div class="q-main">Of those connected recall calls, what percentage are converting into booked appointments? <span class="req-star">*</span></div>
+          </td>
+          <td><span class="team-tag team-product">Product</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section C3 — Recall Revenue & Operational Impact -->
+  <div class="section" data-product="service">
+    <div class="section-header outbound-header">
+      <div class="section-number outbound">C3</div>
+      <div class="section-title-block">
+        <h2 class="outbound-title">Recall Revenue &amp; Operational Impact</h2>
+        <p>Ties the recall outreach results to revenue recovered and team capacity freed up.</p>
+      </div>
+    </div>
+    <table class="q-table outbound-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr data-teams="cs">
+          <td><span class="q-num outbound">Q30</span></td>
+          <td><span class="topic-badge outbound">Net-New Impact</span></td>
+          <td>
+            <div class="q-main">Would these recall appointments have happened without Vini's outreach? <span class="req-star">*</span></div>
+            <div class="q-fallback outbound-fallback">Were most of these customers in the backlog — people who would never have been contacted manually?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr data-teams="cs">
+          <td><span class="q-num outbound">Q31</span></td>
+          <td><span class="topic-badge outbound">Revenue Impact</span></td>
+          <td>
+            <div class="q-main">Have you been able to quantify the service revenue recovered through Vini's recall outreach? <span class="req-star">*</span></div>
+            <div class="q-fallback outbound-fallback">Using your average RO value on recall work, how would you estimate the monthly revenue impact?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num outbound">Q32</span></td>
+          <td><span class="topic-badge outbound">Team Capacity</span></td>
+          <td>
+            <div class="q-main">Has automating recall outreach freed up your BDC or advisors for higher-value work?</div>
+            <div class="q-fallback outbound-fallback">What were they spending that time on before, and what are they doing with it now?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num outbound">Q33</span></td>
+          <td><span class="topic-badge outbound">Customer Trust</span></td>
+          <td>
+            <div class="q-main">Has proactive recall outreach changed how customers perceive your dealership's service?</div>
+            <div class="q-fallback outbound-fallback">Have customers mentioned appreciating being reached out to proactively? Any impact on CSI or loyalty?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+  <!-- Section C4 — Closing & Quote Capture (Recall) -->
+  <div class="section" data-product="service">
+    <div class="section-header outbound-header">
+      <div class="section-number outbound">C4</div>
+      <div class="section-title-block">
+        <h2 class="outbound-title">Closing &amp; Quote Capture</h2>
+        <p>Always end here. Give the customer space to speak freely — this is where the publishable quote lives.</p>
+      </div>
+    </div>
+    <table class="q-table outbound-table">
+      <thead>
+        <tr><th class="col-num">#</th><th class="col-topic">Topic</th><th class="col-q">Question</th><th class="col-team">Team</th></tr>
+      </thead>
+      <tbody>
+        <tr class="optional-row" data-teams="cs">
+          <td><span class="q-num outbound">Q34</span></td>
+          <td><span class="topic-badge outbound">Open Close</span></td>
+          <td>
+            <div class="q-main">Is there anything else about your experience with Vini's recall outreach that you'd want us to capture?</div>
+          </td>
+          <td><span class="team-tag team-cs">Customer Success</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-rows-notice">No questions match the selected team for this section.</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  CONDENSED — SALES                         -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="condensed-wrapper sales-condensed" data-product="sales">
+    <div class="condensed-header">
+      <h2>Sales — Condensed Version (Required Questions Only)</h2>
+      <span class="time-badge">⏱ 15–20 min</span>
+    </div>
+    <p class="condensed-subtext">Pull dashboard data beforehand so the conversation focuses on confirmation and qualitative depth rather than number recall.</p>
+    <div class="condensed-grid">
+      <div class="condensed-block">
+        <h3>Setup &amp; Context <span class="block-time">2 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Setup</span> Which Vini products are live, how long, how many locations, franchise or independent?</li>
+          <li><span class="li-ref">Q1</span> How many vehicles sold or serviced per month?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>The Problem <span class="block-time">4 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q3</span> Were after-hours sales calls being handled, and what happened to them?</li>
+          <li><span class="li-ref">Q5</span> What percentage of sales calls were being missed or poorly handled?</li>
+          <li><span class="li-ref">Q6</span> How quickly were inbound calls and internet leads responded to?</li>
+          <li><span class="li-ref">Q7</span> Did delayed responses affect conversion?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Before Benchmarks <span class="block-time">2 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q8</span> What percentage of inbound sales calls turned into qualified leads?</li>
+          <li><span class="li-ref">Q9</span> Of qualified leads, how many converted into appointments?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Vini Performance <span class="block-time">4 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q10</span> How many calls is Vini handling per month?</li>
+          <li><span class="li-ref">Q11</span> Qualification rate from Vini-handled calls?</li>
+          <li><span class="li-ref">Q12</span> Appointment conversion rate from qualified leads?</li>
+          <li><span class="li-ref">Q13</span> After-hours vs. peak overflow split?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Business Impact <span class="block-time">3 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q14</span> What percentage of Vini appointments would have been missed entirely?</li>
+          <li><span class="li-ref">Q15</span> Revenue number — generated or recovered?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Quote Capture <span class="block-time">3 min</span></h3>
+        <ul>
+          <li>What's the single biggest difference Vini has made for your dealership?</li>
+          <li>What would you tell another GM or Sales Director about Vini?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="condensed-note">
+      💡 For revenue questions (Q15), walk in with a pre-calculated estimate based on dashboard data and average front-end gross per unit — let the customer confirm a number rather than calculate on the spot.
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  CONDENSED — SERVICE                       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="condensed-wrapper svc-condensed" data-product="service" style="margin-top: 24px;">
+    <div class="condensed-header">
+      <h2>Service — Condensed Version (Required Questions Only)</h2>
+      <span class="time-badge">⏱ 20–25 min</span>
+    </div>
+    <p class="condensed-subtext">Pull dashboard data beforehand. Use the inbound track for Service Inbound deployments and add the outbound track if recall is active.</p>
+
+    <div class="condensed-track-label inbound">📞 Service Inbound</div>
+    <div class="condensed-grid">
+      <div class="condensed-block">
+        <h3>Setup &amp; Context <span class="block-time">2 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Setup</span> Which Vini products are live, how long, how many locations, franchise or independent?</li>
+          <li><span class="li-ref">Q1</span> How many vehicles do you service per month?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>The Problem <span class="block-time">4 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q3</span> Were after-hours service calls being handled, and what happened to them?</li>
+          <li><span class="li-ref">Q5</span> What percentage of service calls were being missed?</li>
+          <li><span class="li-ref">Q6</span> How quickly were inbound service calls being answered?</li>
+          <li><span class="li-ref">Q7</span> Did slow or missed responses cost you service appointments?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Before Benchmarks <span class="block-time">2 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q8</span> How were service appointments booked after hours before Vini?</li>
+          <li><span class="li-ref">Q9</span> What percentage of service calls converted into booked appointments?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Vini Performance <span class="block-time">4 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q10</span> How many service calls is Vini handling per month?</li>
+          <li><span class="li-ref">Q11</span> Booking conversion rate from Vini-handled calls?</li>
+          <li><span class="li-ref">Q12</span> Additional ROs per month attributable to Vini?</li>
+          <li><span class="li-ref">Q13</span> After-hours vs. peak overflow split?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Business Impact <span class="block-time">3 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q14</span> What percentage of Vini bookings would have been missed entirely?</li>
+          <li><span class="li-ref">Q15</span> Revenue figure — additional service volume generated?</li>
+        </ul>
+      </div>
+      <div class="condensed-block">
+        <h3>Quote Capture <span class="block-time">3 min</span></h3>
+        <ul>
+          <li>What's the single biggest difference Vini Service Inbound has made?</li>
+          <li>What would you tell another Fixed Ops Director about Vini?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="condensed-track-label outbound-label">📤 Service Outbound — Recall</div>
+    <div class="condensed-grid">
+      <div class="condensed-block outbound-block">
+        <h3>Recall Baseline <span class="block-time">3 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q23</span> How large is your open recall backlog, and how many customers need to be contacted monthly?</li>
+          <li><span class="li-ref">Q24</span> How was recall outreach being managed before Vini?</li>
+          <li><span class="li-ref">Q25</span> What was the biggest frustration with the old recall process?</li>
+        </ul>
+      </div>
+      <div class="condensed-block outbound-block">
+        <h3>Vini Recall Performance <span class="block-time">3 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q27</span> How many recall calls is Vini making per month?</li>
+          <li><span class="li-ref">Q28</span> What's the connection rate on recall calls?</li>
+          <li><span class="li-ref">Q29</span> What percentage of connected calls are booking appointments?</li>
+        </ul>
+      </div>
+      <div class="condensed-block outbound-block">
+        <h3>Recall Impact <span class="block-time">3 min</span></h3>
+        <ul>
+          <li><span class="li-ref">Q30</span> Would these recall appointments have happened without Vini?</li>
+          <li><span class="li-ref">Q31</span> Revenue recovered through recall outreach?</li>
+        </ul>
+      </div>
+      <div class="condensed-block outbound-block">
+        <h3>Quote Capture <span class="block-time">2 min</span></h3>
+        <ul>
+          <li>What's the biggest operational change since Vini took over recall outreach?</li>
+          <li>What would you tell another Service Manager about Vini's recall automation?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="condensed-note">
+      💡 For revenue questions (Q15, Q31), walk in with pre-calculated estimates — average RO value × incremental bookings for inbound; average recall RO value × booked recall appointments for outbound. Let the customer confirm rather than calculate on the spot.
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+  function applyFilters() {
+    const product = document.getElementById('product-filter').value;
+    const team    = document.getElementById('team-filter').value;
+
+    let totalVisible = 0;
+
+    // 1. Filter product-track-header dividers
+    document.querySelectorAll('.product-track-header[data-product]').forEach(el => {
+      el.style.display = (product === 'both' || el.dataset.product === product) ? '' : 'none';
+    });
+
+    // 2. Filter sections and their rows
+    document.querySelectorAll('.section[data-product]').forEach(section => {
+      const productMatch = product === 'both' || section.dataset.product === product;
+
+      if (!productMatch) {
+        section.style.display = 'none';
+        return;
+      }
+
+      const rows = section.querySelectorAll('tbody tr');
+      const notice = section.querySelector('.no-rows-notice');
+      let visibleRows = 0;
+
+      rows.forEach(row => {
+        const teams = row.dataset.teams ? row.dataset.teams.split(',') : [];
+        const teamMatch = team === 'all' || teams.includes(team);
+        row.style.display = teamMatch ? '' : 'none';
+        if (teamMatch) visibleRows++;
+      });
+
+      if (visibleRows === 0) {
+        section.style.display = 'none';
+      } else {
+        section.style.display = '';
+        totalVisible += visibleRows;
+        if (notice) notice.style.display = 'none';
+      }
+    });
+
+    // 3. Filter condensed wrappers (by product only, not team)
+    document.querySelectorAll('.condensed-wrapper[data-product]').forEach(el => {
+      el.style.display = (product === 'both' || el.dataset.product === product) ? '' : 'none';
+    });
+
+    // 4. Update status
+    const productLabel = { both: 'Sales + Service', sales: 'Sales', service: 'Service' }[product];
+    const teamLabel    = { all: 'All Teams', onboard: 'Onboarding', cs: 'Customer Success', sales: 'Sales', product: 'Product' }[team];
+    document.getElementById('filter-status').innerHTML =
+      `Showing <strong>${productLabel}</strong> · <strong>${teamLabel}</strong>`;
+  }
+
+  // Run on load
+  applyFilters();
+</script>
+
+</body>
+</html>
