@@ -1,256 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spyne AI Product Hub</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spyne Interview Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+body{
+font-family:'Inter',sans-serif;
+background:#f5f1ec;
+color:#1e1e1e;
+padding:40px;
+}
 
-    <style>
+.header{
+background:linear-gradient(135deg,#ffffff,#f3ece5);
+padding:30px 40px;
+border-radius:28px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 8px 30px rgba(0,0,0,0.06);
+margin-bottom:35px;
+}
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+.logo-section{
+display:flex;
+align-items:center;
+gap:20px;
+}
 
-        body{
-            font-family:'Inter',sans-serif;
-            min-height:100vh;
-            background:
-                radial-gradient(circle at top left,#1e3a8a22,transparent 35%),
-                radial-gradient(circle at bottom right,#06b6d422,transparent 35%),
-                linear-gradient(135deg,#020617,#0f172a,#111827);
-            color:white;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            padding:40px 20px;
-        }
+.logo-section img{
+height:48px;
+}
 
-        .container{
-            width:100%;
-            max-width:1150px;
-        }
+.title-block h1{
+font-size:34px;
+font-weight:700;
+letter-spacing:-1px;
+margin-bottom:6px;
+}
 
-        .header{
-            text-align:center;
-            margin-bottom:60px;
-        }
+.title-block p{
+font-size:15px;
+color:#666;
+}
 
-        .logo{
-            width:90px;
-            margin-bottom:25px;
-            filter:drop-shadow(0 0 18px rgba(255,255,255,0.08));
-        }
+.filters{
+display:flex;
+gap:16px;
+flex-wrap:wrap;
+margin-bottom:35px;
+}
 
-        .header h1{
-            font-size:52px;
-            font-weight:800;
-            letter-spacing:-1px;
-            margin-bottom:18px;
-            background:linear-gradient(to right,#ffffff,#94a3b8);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-        }
+.filter-box{
+background:white;
+padding:16px 18px;
+border-radius:18px;
+box-shadow:0 6px 20px rgba(0,0,0,0.05);
+min-width:220px;
+}
 
-        .header p{
-            color:#94a3b8;
-            font-size:18px;
-            max-width:700px;
-            margin:auto;
-            line-height:1.7;
-        }
+.filter-box label{
+display:block;
+font-size:13px;
+font-weight:600;
+margin-bottom:8px;
+color:#7b5b43;
+}
 
-        .cards{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-            gap:28px;
-        }
+select{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#f7f4f1;
+font-size:14px;
+font-weight:500;
+outline:none;
+}
 
-        .card{
-            position:relative;
-            background:rgba(17,24,39,0.82);
-            border:1px solid rgba(255,255,255,0.08);
-            border-radius:28px;
-            padding:35px;
-            overflow:hidden;
-            transition:0.35s ease;
-            backdrop-filter:blur(14px);
-            box-shadow:
-                0 10px 40px rgba(0,0,0,0.45),
-                inset 0 1px 0 rgba(255,255,255,0.03);
-        }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:24px;
+}
 
-        .card::before{
-            content:'';
-            position:absolute;
-            width:180px;
-            height:180px;
-            border-radius:50%;
-            background:rgba(37,99,235,0.14);
-            top:-60px;
-            right:-60px;
-        }
+.section{
+display:none;
+background:linear-gradient(180deg,#ffffff,#f8f2ec);
+border-radius:28px;
+padding:28px;
+position:relative;
+overflow:hidden;
+min-height:320px;
+box-shadow:0 10px 30px rgba(0,0,0,0.06);
+transition:all 0.3s ease;
+}
 
-        .card:hover{
-            transform:translateY(-8px);
-            border-color:rgba(96,165,250,0.4);
-            box-shadow:
-                0 20px 50px rgba(0,0,0,0.5),
-                0 0 25px rgba(37,99,235,0.12);
-        }
+.section:hover{
+transform:translateY(-4px);
+}
 
-        .tag{
-            display:inline-block;
-            padding:8px 14px;
-            border-radius:999px;
-            background:rgba(37,99,235,0.15);
-            color:#60a5fa;
-            font-size:13px;
-            font-weight:600;
-            margin-bottom:22px;
-            border:1px solid rgba(96,165,250,0.25);
-        }
+.section::before{
+content:'';
+position:absolute;
+right:-40px;
+top:-40px;
+width:180px;
+height:180px;
+border-radius:50%;
+background:rgba(123,91,67,0.08);
+}
 
-        .card h2{
-            font-size:28px;
-            margin-bottom:18px;
-            font-weight:700;
-            letter-spacing:-0.5px;
-        }
+.badge{
+display:inline-block;
+padding:8px 14px;
+border-radius:999px;
+background:#7b5b43;
+color:white;
+font-size:12px;
+font-weight:600;
+margin-bottom:18px;
+}
 
-        .card p{
-            color:#cbd5e1;
-            line-height:1.8;
-            font-size:15.5px;
-            margin-bottom:35px;
-        }
+.section h2{
+font-size:28px;
+line-height:1.2;
+margin-bottom:12px;
+color:#2b2b2b;
+}
 
-        .btn{
-            display:inline-flex;
-            align-items:center;
-            gap:10px;
-            text-decoration:none;
-            background:linear-gradient(135deg,#2563eb,#3b82f6);
-            color:white;
-            padding:15px 22px;
-            border-radius:14px;
-            font-weight:600;
-            transition:0.3s ease;
-            box-shadow:0 8px 20px rgba(37,99,235,0.25);
-        }
+.section p.subtitle{
+font-size:14px;
+color:#777;
+margin-bottom:22px;
+line-height:1.6;
+}
 
-        .btn:hover{
-            transform:translateY(-2px);
-            background:linear-gradient(135deg,#1d4ed8,#2563eb);
-            box-shadow:0 12px 28px rgba(37,99,235,0.35);
-        }
+.content{
+max-height:420px;
+overflow:auto;
+padding-right:10px;
+line-height:1.8;
+font-size:14px;
+}
 
-        .footer{
-            margin-top:50px;
-            text-align:center;
-            color:#64748b;
-            font-size:14px;
-        }
+.content::-webkit-scrollbar{
+width:6px;
+}
 
-        @media(max-width:768px){
+.content::-webkit-scrollbar-thumb{
+background:#c8b09b;
+border-radius:10px;
+}
 
-            .header h1{
-                font-size:38px;
-            }
+.footer-note{
+margin-top:40px;
+text-align:center;
+font-size:13px;
+color:#777;
+}
 
-            .header p{
-                font-size:16px;
-            }
+@media(max-width:768px){
+body{
+padding:20px;
+}
 
-            .card{
-                padding:28px;
-            }
+.header{
+flex-direction:column;
+align-items:flex-start;
+gap:18px;
+}
 
-        }
-
-    </style>
+.title-block h1{
+font-size:28px;
+}
+}
+</style>
 </head>
-
 <body>
 
-    <div class="container">
+<div class="header">
+<div class="logo-section">
+<img src="Spyne Black Logo.svg" alt="Spyne Logo">
+<div class="title-block">
+<h1>Spyne Interview Intelligence Hub</h1>
+<p>Structured product-wise and team-wise interview guidance for internal enablement.</p>
+</div>
+</div>
+</div>
 
-        <div class="header">
+<div class="filters">
+<div class="filter-box">
+<label>Select Product</label>
+<select id="productSelect" onchange="filterSections()">
+<option value="all">All Products</option>
+<option value="sales">Sales</option>
+<option value="service">Service</option>
+<option value="both">Both</option>
+</select>
+</div>
 
-            <!-- Replace with your logo path -->
-            <img src="Spyne+Logo+black.png" alt="Spyne Logo" class="logo">
+<div class="filter-box">
+<label>Select Team</label>
+<select id="teamSelect" onchange="filterSections()">
+<option value="all">All Teams</option>
+<option value="product">Product</option>
+<option value="onboarding">Onboarding</option>
+<option value="sales-team">Sales</option>
+<option value="customer-success">Customer Success</option>
+</select>
+</div>
+</div>
 
-            <h1>Spyne AI Product Hub</h1>
+<div class="grid">
 
-            <p>
-                Explore product resources, sales intelligence frameworks,
-                interview guides, and objection-handling systems built for
-                modern AI-powered automotive retail teams.
-            </p>
+<div class="section sales product">
+<div class="badge">Sales • Product</div>
+<h2>Sales Product Questions</h2>
+<p class="subtitle">Product-level interview guidance and qualification framework.</p>
+<div class="content">
+<!-- Paste ORIGINAL Sales Product Questions here exactly as-is -->
+</div>
+</div>
 
-        </div>
+<div class="section sales onboarding">
+<div class="badge">Sales • Onboarding</div>
+<h2>Sales Onboarding Questions</h2>
+<p class="subtitle">Implementation and onboarding workflow discussions.</p>
+<div class="content">
+<!-- Paste ORIGINAL Sales Onboarding Questions here exactly as-is -->
+</div>
+</div>
 
-        <div class="cards">
+<div class="section sales sales-team">
+<div class="badge">Sales • Sales Team</div>
+<h2>Sales Team Questions</h2>
+<p class="subtitle">Revenue, pipeline, conversion and sales execution related questions.</p>
+<div class="content">
+<!-- Paste ORIGINAL Sales Team Questions here exactly as-is -->
+</div>
+</div>
 
-            <!-- Interview Guide Card -->
-            <div class="card">
+<div class="section sales customer-success">
+<div class="badge">Sales • Customer Success</div>
+<h2>Sales Customer Success Questions</h2>
+<p class="subtitle">Retention, adoption and customer enablement related discussions.</p>
+<div class="content">
+<!-- Paste ORIGINAL Sales Customer Success Questions here exactly as-is -->
+</div>
+</div>
 
-                <span class="tag">Customer Research</span>
+<div class="section service product">
+<div class="badge">Service • Product</div>
+<h2>Service Product Questions</h2>
+<p class="subtitle">Service product understanding and operational process alignment.</p>
+<div class="content">
+<!-- Paste ORIGINAL Service Product Questions here exactly as-is -->
+</div>
+</div>
 
-                <h2>Vini Interview Guide</h2>
+<div class="section service onboarding">
+<div class="badge">Service • Onboarding</div>
+<h2>Service Onboarding Questions</h2>
+<p class="subtitle">Service deployment and onboarding workflows.</p>
+<div class="content">
+<!-- Paste ORIGINAL Service Onboarding Questions here exactly as-is -->
+</div>
+</div>
 
-                <p>
-                    <strong>Vini AI — Sales & Service Interview Guide</strong><br><br>
+<div class="section service sales-team">
+<div class="badge">Service • Sales Team</div>
+<h2>Service Sales Questions</h2>
+<p class="subtitle">Sales process and customer interaction handling for service workflows.</p>
+<div class="content">
+<!-- Paste ORIGINAL Service Sales Questions here exactly as-is -->
+</div>
+</div>
 
-                    Use this guide when interviewing customers for
-                    Vini AI case studies. Filter by product and team below.
-                    Lead with the primary question; use the fallback in italics
-                    if the customer needs prompting.
-                </p>
+<div class="section service customer-success">
+<div class="badge">Service • Customer Success</div>
+<h2>Service Customer Success Questions</h2>
+<p class="subtitle">Customer retention and operational satisfaction workflows.</p>
+<div class="content">
+<!-- Paste ORIGINAL Service Customer Success Questions here exactly as-is -->
+</div>
+</div>
 
-                <a class="btn" href="vini_interview_guide_Final.html">
-                    Open Interview Guide →
-                </a>
+</div>
 
-            </div>
+<div class="footer-note">
+Spyne Internal Enablement • Interview Intelligence System
+</div>
 
-            <!-- Playbook Card -->
-            <div class="card">
+<script>
+function filterSections() {
+const product = document.getElementById('productSelect').value;
+const team = document.getElementById('teamSelect').value;
 
-                <span class="tag">Sales Enablement</span>
+const sections = document.querySelectorAll('.section');
 
-                <h2>Vini Playbook</h2>
+sections.forEach(section => {
+const matchProduct = product === 'all' || section.classList.contains(product);
+const matchTeam = team === 'all' || section.classList.contains(team);
 
-                <p>
-                    <strong>
-                        Pattern-based objection handling for AEs
-                    </strong><br><br>
+if(matchProduct && matchTeam){
+section.style.display = 'block';
+}else{
+section.style.display = 'none';
+}
+});
+}
 
-                    Sales Objection Playbook.<br><br>
-
-                    Every objection in this playbook came from a real call —
-                    transcribed, categorized, and patterned so your team is
-                    never caught off guard. Each trigger phrase maps to the
-                    question behind the question, and a response that moves
-                    the deal forward.
-                </p>
-
-                <a class="btn" href="vini_playbook_v4.html">
-                    Open Playbook →
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="footer">
-            © 2025 Spyne AI • Internal Product Resources
-        </div>
-
-    </div>
+filterSections();
+</script>
 
 </body>
 </html>
+
